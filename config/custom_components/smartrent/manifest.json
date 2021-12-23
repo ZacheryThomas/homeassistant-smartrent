@@ -1,0 +1,11 @@
+{
+    "domain": "goober_lock",
+    "name": "Goober Lock",
+    "documentation": "https://github.com/home-assistant/example-custom-config/tree/master/custom_components/example_light/",
+    "dependencies": [],
+    "codeowners": [],
+    "config_flow": false,
+    "requirements": ["smartrent.py"],
+    "iot_class": "cloud_polling",
+    "version": "0.1.0"
+  }

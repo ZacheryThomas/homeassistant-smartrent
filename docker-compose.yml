@@ -1,0 +1,12 @@
+version: "3"
+services:
+  homeassistant:
+    image: homeassistant/home-assistant:stable
+    ports:
+        - 8123:8123
+    environment:
+      TZ: America/New_York
+    volumes:
+      - ./config:/config
+    restart: unless-stopped
+    cpus: 0.25

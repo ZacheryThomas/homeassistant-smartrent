@@ -1,0 +1,31 @@
+
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+# http:
+#   server_port: 80
+
+# Text to speech
+tts:
+  - platform: google_translate
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+
+lock:
+  - platform: smartrent
+    username: ''
+    password: ''
+
+climate:
+  - platform: smartrent
+    username: ''
+    password: ''
+
+logger:
+  default: warning
+  logs:
+    custom_components.example_lock: info
+    smartrent: info
