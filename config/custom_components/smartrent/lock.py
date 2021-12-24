@@ -16,7 +16,6 @@ _LOGGER = logging.getLogger(__name__)
 
 # Validation of the user's configuration
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
-    # vol.Required(CONF_HOST): cv.string,
     vol.Optional(CONF_USERNAME): cv.string,
     vol.Optional(CONF_PASSWORD): cv.string,
 })
@@ -27,29 +26,24 @@ async def async_setup_platform(hass, config, add_entities, discovery_info=None):
     # Assign configuration variables.
     # The configuration check takes care they are present.
     username = config[CONF_USERNAME]
-    password = config.get(CONF_PASSWORD)
+    password = config[CONF_PASSWORD]
 
-    api = await async_login(username, password)
-    locks = api.get_locks()
+    sr = await async_login(username, password)
+
+    locks = sr.get_locks()
     for lock in locks:
         add_entities([LockEnt(lock)])
-    _LOGGER.error('deleting locks?')
 
-import datetime
-SCAN_INTERVAL = datetime.timedelta(seconds=5)
 class LockEnt(LockEntity):
     def __init__(self, lock: DoorLock) -> None:
         super().__init__()
         self.device = lock
+        self._attr_supported_features = SUPPORT_OPEN
 
-        import aiohttp
-        self.device._session = aiohttp.ClientSession()
-
+        self.device.start_updater()
         self.device.set_update_callback(
             self.async_schedule_update_ha_state
         )
-        self.device.start_updater()
-        self._attr_supported_features = SUPPORT_OPEN
 
     @property
     def supported_features(self):
@@ -84,13 +78,6 @@ class LockEnt(LockEntity):
 
     async def async_lock(self):
         await self.device.async_set_locked(True)
-        _LOGGER.error(self.device.get_locked())
 
     async def async_unlock(self):
         await self.device.async_set_locked(False)
-
-    async def async_update(self):
-        _LOGGER.info('Calling lock update')
-        # await self.device.fetch_state()
-        pass
-

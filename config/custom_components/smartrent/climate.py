@@ -25,7 +25,6 @@ _LOGGER = logging.getLogger(__name__)
 
 # Validation of the user's configuration
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
-    # vol.Required(CONF_HOST): cv.string,
     vol.Optional(CONF_USERNAME): cv.string,
     vol.Optional(CONF_PASSWORD): cv.string,
 })
@@ -46,11 +45,11 @@ async def async_setup_platform(hass, config, add_entities, discovery_info=None):
     # Assign configuration variables.
     # The configuration check takes care they are present.
     username = config[CONF_USERNAME]
-    password = config.get(CONF_PASSWORD)
+    password = config[CONF_PASSWORD]
 
-    api = await async_login(username, password)
+    sr = await async_login(username, password)
 
-    thermostats = api.get_thermostats()
+    thermostats = sr.get_thermostats()
     for thermostat in thermostats:
         add_entities([ThermostatEntity(thermostat)])
 
@@ -60,15 +59,10 @@ class ThermostatEntity(ClimateEntity):
         super().__init__()
         self.device = thermo
 
-        import aiohttp
-        self.device._session = aiohttp.ClientSession()
-
-        self.last_desired_temp = None
-
+        self.device.start_updater()
         self.device.set_update_callback(
             self.async_schedule_update_ha_state
         )
-        self.device.start_updater()
 
     @property
     def should_poll(self):
@@ -179,7 +173,3 @@ class ThermostatEntity(ClimateEntity):
     def fan_modes(self):
         """List of available fan modes."""
         return SUPPORT_FAN
-
-    # async def async_update(self):
-    #     _LOGGER.error('FETCHING CLIMATE DATA!')
-    #     pass
