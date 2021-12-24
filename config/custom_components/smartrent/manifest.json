@@ -7,5 +7,5 @@
   "config_flow": false,
   "requirements": ["smartrent.py>=0.1.1"],
   "iot_class": "cloud_polling",
-  "version": "0.1.0"
+  "version": "0.0.1"
 }
