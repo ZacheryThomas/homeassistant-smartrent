@@ -1,7 +1,7 @@
 {
   "domain": "smartrent",
   "name": "SmartRent",
-  "documentation": "https://github.com/home-assistant/example-custom-config/tree/master/custom_components/example_light/",
+  "documentation": "https://github.com/ZacheryThomas/homeassistant-smartrent",
   "dependencies": [],
   "codeowners": [],
   "config_flow": false,
