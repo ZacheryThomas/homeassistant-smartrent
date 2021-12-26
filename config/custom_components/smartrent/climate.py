@@ -19,6 +19,8 @@ from homeassistant.components.climate.const import (
     SUPPORT_FAN_MODE,
     SUPPORT_TARGET_TEMPERATURE_RANGE,
     SUPPORT_TARGET_TEMPERATURE,
+    FAN_ON,
+    FAN_AUTO
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -37,7 +39,13 @@ HA_MODE_TO_SMART_RENT = {
 }
 SMARTRENT_MODE_TO_HA = {value: key for key, value in HA_MODE_TO_SMART_RENT.items()}
 
-SUPPORT_FAN = ['on', 'auto']
+HA_FAN_TO_SMART_RENT = {
+    FAN_ON: 'on',
+    FAN_AUTO: 'auto'
+}
+SMARTRENT_FAN_TO_HA = {value: key for key, value in HA_FAN_TO_SMART_RENT.items()}
+
+SUPPORT_FAN = [FAN_ON, FAN_AUTO]
 SUPPORT_HVAC = [HVAC_MODE_HEAT, HVAC_MODE_COOL, HVAC_MODE_OFF, HVAC_MODE_HEAT_COOL]
 
 async def async_setup_platform(hass, config, add_entities, discovery_info=None):
@@ -140,7 +148,9 @@ class ThermostatEntity(ClimateEntity):
     @property
     def hvac_mode(self):
         """Return current operation ie. heat, cool, idle."""
-        return SMARTRENT_MODE_TO_HA.get(self.device.get_mode(), None)
+        smartrent_hvac_mode = self.device.get_mode()
+
+        return SMARTRENT_MODE_TO_HA.get(smartrent_hvac_mode, None)
 
     @property
     def hvac_modes(self):
@@ -149,7 +159,9 @@ class ThermostatEntity(ClimateEntity):
 
     async def async_set_hvac_mode(self, hvac_mode):
         """Set new target operation mode."""
-        await self.device.async_set_mode(HA_MODE_TO_SMART_RENT.get(hvac_mode))
+        smartrent_hvac_mode = HA_MODE_TO_SMART_RENT.get(hvac_mode)
+
+        await self.device.async_set_mode(smartrent_hvac_mode)
 
     async def async_set_temperature(self, **kwargs):
         _LOGGER.info(kwargs)
@@ -171,11 +183,15 @@ class ThermostatEntity(ClimateEntity):
     @property
     def fan_mode(self):
         """Return the fan setting."""
-        return self.device.get_fan_mode()
+        smartrent_fan_mode = self.device.get_fan_mode()
+
+        return SMARTRENT_FAN_TO_HA.get(smartrent_fan_mode, None)
 
     async def async_set_fan_mode(self, fan_mode):
         """Set fan mode."""
-        await self.device.async_set_fan_mode(fan_mode)
+        smartrent_fan_mode = HA_FAN_TO_SMART_RENT.get(fan_mode)
+
+        await self.device.async_set_fan_mode(smartrent_fan_mode)
 
     @property
     def fan_modes(self):
