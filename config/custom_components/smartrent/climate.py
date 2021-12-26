@@ -81,7 +81,15 @@ class ThermostatEntity(ClimateEntity):
     @property
     def supported_features(self):
         """Return the list of supported features."""
-        return SUPPORT_TARGET_TEMPERATURE | SUPPORT_TARGET_TEMPERATURE_RANGE | SUPPORT_FAN_MODE
+
+        # if fan has an active mode, assume fan option exists on thermostat
+        has_fan = self.device.get_fan_mode()
+        default_features = SUPPORT_TARGET_TEMPERATURE | SUPPORT_TARGET_TEMPERATURE_RANGE
+
+        if has_fan:
+            return default_features | SUPPORT_FAN_MODE
+
+        return default_features
 
     @property
     def temperature_unit(self):
