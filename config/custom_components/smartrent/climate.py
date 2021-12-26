@@ -155,7 +155,7 @@ class ThermostatEntity(ClimateEntity):
         _LOGGER.info(kwargs)
         temperature = kwargs.get(ATTR_TEMPERATURE)
         if temperature:
-            if self.device.mode == 'cool':
+            if self.device.get_mode() == 'cool':
                 await self.device.async_set_cooling_setpoint(temperature)
             else:
                 await self.device.async_set_heating_setpoint(temperature)
