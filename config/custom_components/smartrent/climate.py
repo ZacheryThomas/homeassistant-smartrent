@@ -29,13 +29,13 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Optional(CONF_PASSWORD): cv.string,
 })
 
-HA_STATE_TO_SMART_RENT = {
+HA_MODE_TO_SMART_RENT = {
     HVAC_MODE_COOL: "cool",
     HVAC_MODE_HEAT: "heat",
     HVAC_MODE_OFF: "off",
     HVAC_MODE_HEAT_COOL: 'auto'
 }
-SMARTRENT_STATE_TO_HA = {value: key for key, value in HA_STATE_TO_SMART_RENT.items()}
+SMARTRENT_MODE_TO_HA = {value: key for key, value in HA_MODE_TO_SMART_RENT.items()}
 
 SUPPORT_FAN = ['on', 'auto']
 SUPPORT_HVAC = [HVAC_MODE_HEAT, HVAC_MODE_COOL, HVAC_MODE_OFF, HVAC_MODE_HEAT_COOL]
@@ -140,7 +140,7 @@ class ThermostatEntity(ClimateEntity):
     @property
     def hvac_mode(self):
         """Return current operation ie. heat, cool, idle."""
-        return SMARTRENT_STATE_TO_HA.get(self.device.get_mode(), None)
+        return SMARTRENT_MODE_TO_HA.get(self.device.get_mode(), None)
 
     @property
     def hvac_modes(self):
@@ -149,7 +149,7 @@ class ThermostatEntity(ClimateEntity):
 
     async def async_set_hvac_mode(self, hvac_mode):
         """Set new target operation mode."""
-        await self.device.async_set_mode(HA_STATE_TO_SMART_RENT.get(hvac_mode))
+        await self.device.async_set_mode(HA_MODE_TO_SMART_RENT.get(hvac_mode))
 
     async def async_set_temperature(self, **kwargs):
         _LOGGER.info(kwargs)
