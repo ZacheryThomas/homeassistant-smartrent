@@ -7,6 +7,13 @@ services:
     environment:
       TZ: America/New_York
     volumes:
-      - ./config:/config
+      - ./custom_components:/config/custom_components
+      - ./config/.storage/:/config/.storage/
+      - ./config/configuration.yaml:/config/configuration.yaml
+      - ./config/groups.yaml:/config/groups.yaml
+      - ./config/scenes.yaml:/config/scenes.yaml
+      - ./config/scripts.yaml:/config/scripts.yaml
+      - ./config/secrets.yaml:/config/secrets.yaml
+      - ./config/automations.yaml:/config/automations.yaml
     restart: unless-stopped
     cpus: 0.25
