@@ -1,7 +1,6 @@
 """Platform for lock integration."""
 import logging
 from smartrent import async_login, Thermostat
-
 from typing import Union
 
 import voluptuous as vol
@@ -23,13 +22,9 @@ from homeassistant.components.climate.const import (
     FAN_AUTO
 )
 
-_LOGGER = logging.getLogger(__name__)
+from .const import DOMAIN
 
-# Validation of the user's configuration
-PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
-    vol.Optional(CONF_USERNAME): cv.string,
-    vol.Optional(CONF_PASSWORD): cv.string,
-})
+_LOGGER = logging.getLogger(__name__)
 
 HA_MODE_TO_SMART_RENT = {
     HVAC_MODE_COOL: "cool",
@@ -48,19 +43,12 @@ SMARTRENT_FAN_TO_HA = {value: key for key, value in HA_FAN_TO_SMART_RENT.items()
 SUPPORT_FAN = [FAN_ON, FAN_AUTO]
 SUPPORT_HVAC = [HVAC_MODE_HEAT, HVAC_MODE_COOL, HVAC_MODE_OFF, HVAC_MODE_HEAT_COOL]
 
-async def async_setup_platform(hass, config, add_entities, discovery_info=None):
-    """Set up the Awesome Light platform."""
-    # Assign configuration variables.
-    # The configuration check takes care they are present.
-    username = config[CONF_USERNAME]
-    password = config[CONF_PASSWORD]
-
-    sr = await async_login(username, password)
-
-    thermostats = sr.get_thermostats()
+async def async_setup_entry(hass, entry, async_add_entities):
+    """Setup sensor platform."""
+    client = hass.data[DOMAIN][entry.entry_id]
+    thermostats = client.get_thermostats()
     for thermostat in thermostats:
-        add_entities([ThermostatEntity(thermostat)])
-
+        async_add_entities([ThermostatEntity(thermostat)])
 
 class ThermostatEntity(ClimateEntity):
     def __init__(self, thermo: Thermostat) -> None:
@@ -90,14 +78,22 @@ class ThermostatEntity(ClimateEntity):
     def supported_features(self):
         """Return the list of supported features."""
 
+        # binary list of supported features
+        supports_features = 0
+        fan_mode = self.device.get_fan_mode()
+        mode = self.device.get_mode()
+
+        if mode in ['auto', 'off']:
+            supports_features |= SUPPORT_TARGET_TEMPERATURE_RANGE
+
+        if mode in ['heat', 'cool']:
+            supports_features |= SUPPORT_TARGET_TEMPERATURE
+
         # if fan has an active mode, assume fan option exists on thermostat
-        has_fan = self.device.get_fan_mode()
-        default_features = SUPPORT_TARGET_TEMPERATURE | SUPPORT_TARGET_TEMPERATURE_RANGE
+        if fan_mode:
+            supports_features |= SUPPORT_FAN_MODE
 
-        if has_fan:
-            return default_features | SUPPORT_FAN_MODE
-
-        return default_features
+        return supports_features
 
     @property
     def temperature_unit(self):
@@ -164,7 +160,6 @@ class ThermostatEntity(ClimateEntity):
         await self.device.async_set_mode(smartrent_hvac_mode)
 
     async def async_set_temperature(self, **kwargs):
-        _LOGGER.info(kwargs)
         temperature = kwargs.get(ATTR_TEMPERATURE)
         if temperature:
             if self.device.get_mode() == 'cool':

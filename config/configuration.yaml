@@ -14,18 +14,7 @@ automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
 
-lock:
-  - platform: smartrent
-    username: ''
-    password: ''
-
-climate:
-  - platform: smartrent
-    username: ''
-    password: ''
-
 logger:
   default: warning
   logs:
-    custom_components.example_lock: info
     smartrent: info

@@ -1,0 +1,20 @@
+{
+    "config": {
+        "step": {
+            "user": {
+            "title": "Configure SmartRent",
+            "description": "Enter your SmartRent credentials.",
+            "data": {
+                "username": "Email",
+                "password": "Password"
+            }
+            }
+        },
+        "error": {
+            "invalid_auth": "Auth Failed"
+        },
+        "abort": {
+            "already_configured": "Already Configured Acc"
+        }
+    }
+}

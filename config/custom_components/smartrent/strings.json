@@ -1,29 +1,20 @@
 {
-    "config": {
-      "step": {
-        "user": {
-          "title": "Configure Tile",
-          "data": {
-            "username": "[%key:common::config_flow::data::email%]",
-            "password": "[%key:common::config_flow::data::password%]"
-          }
+  "config": {
+    "step": {
+      "user": {
+        "title": "Configure SmartRent",
+        "description": "Enter your SmartRent credentials.",
+        "data": {
+          "username": "Email",
+          "password": "Password"
         }
-      },
-      "error": {
-        "invalid_auth": "[%key:common::config_flow::error::invalid_auth%]"
-      },
-      "abort": {
-        "already_configured": "[%key:common::config_flow::abort::already_configured_account%]"
       }
     },
-    "options": {
-      "step": {
-        "init": {
-          "title": "Configure Tile",
-          "data": {
-            "show_inactive": "Show inactive Tiles"
-          }
-        }
-      }
+    "error": {
+      "invalid_auth": "Auth Failed"
+    },
+    "abort": {
+      "already_configured": "Already Configured Account"
     }
   }
+}
