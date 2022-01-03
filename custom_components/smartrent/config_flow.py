@@ -2,7 +2,7 @@
 
 import logging
 
-from smartrent import async_login #, Client
+from smartrent import async_login
 
 import voluptuous as vol
 
@@ -54,7 +54,6 @@ class SmartRentFlowHandler(
             await async_login(
                 user_input[CONF_USERNAME], user_input[CONF_PASSWORD], session
             )
-            # Client(user_input[CONF_USERNAME], user_input[CONF_PASSWORD]).async_refresh_token()
         except Exception as exc:
             _LOGGER.error(f'exc: {exc}')
             return await self._show_form({"base": "invalid_auth"})

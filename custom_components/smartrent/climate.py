@@ -1,15 +1,9 @@
 """Platform for lock integration."""
 import logging
-from smartrent import async_login, Thermostat
-from typing import Union
+from smartrent import Thermostat
+from homeassistant.components.climate import ClimateEntity
 
-import voluptuous as vol
-
-import homeassistant.helpers.config_validation as cv
-# Import the device class from the component that you want to support
-from homeassistant.components.climate import (PLATFORM_SCHEMA, ClimateEntity)
-
-from homeassistant.const import CONF_PASSWORD, CONF_USERNAME, ATTR_TEMPERATURE, TEMP_FAHRENHEIT
+from homeassistant.const import ATTR_TEMPERATURE, TEMP_FAHRENHEIT
 from homeassistant.components.climate.const import (
     HVAC_MODE_COOL,
     HVAC_MODE_HEAT,
@@ -44,7 +38,7 @@ SUPPORT_FAN = [FAN_ON, FAN_AUTO]
 SUPPORT_HVAC = [HVAC_MODE_HEAT, HVAC_MODE_COOL, HVAC_MODE_OFF, HVAC_MODE_HEAT_COOL]
 
 async def async_setup_entry(hass, entry, async_add_entities):
-    """Setup sensor platform."""
+    """Setup lock platform."""
     client = hass.data[DOMAIN][entry.entry_id]
     thermostats = client.get_thermostats()
     for thermostat in thermostats:

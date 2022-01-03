@@ -5,14 +5,11 @@ For more details about this integration, please refer to
 https://github.com/custom-components/integration_blueprint
 """
 import asyncio
-from datetime import timedelta
 import logging
 
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.core import Config, HomeAssistant
-from homeassistant.exceptions import ConfigEntryNotReady
+from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
-from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from smartrent import async_login
 
