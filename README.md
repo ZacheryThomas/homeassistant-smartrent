@@ -1,6 +1,9 @@
 # SmartRent Home Assistant Component
 
-[![GitHub](https://img.shields.io/github/license/ZacheryThomas/homeassistant-smartrent.svg)](LICENSE.txt)
+[![GitHub](https://img.shields.io/github/license/zacherythomas/homeassistant-smartrent?style=for-the-badge)](LICENSE.txt)
+[![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg?style=for-the-badge)](https://github.com/hacs/integration)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=for-the-badge)](https://github.com/psf/black)
+
 
 This is basic Homeassistant component to support SmartRent Locks and Thermostats. This component uses the `smartrent.py` library that can be found [here](https://github.com/ZacheryThomas/smartrent.py)!
 
