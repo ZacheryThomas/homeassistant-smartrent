@@ -38,14 +38,12 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
 
     hass.data[DOMAIN][entry.entry_id] = api
 
-    if  api.get_locks():
-        hass.async_add_job(
-            hass.config_entries.async_forward_entry_setup(entry, 'lock')
-        )
+    if api.get_locks():
+        hass.async_add_job(hass.config_entries.async_forward_entry_setup(entry, "lock"))
 
     if api.get_thermostats():
         hass.async_add_job(
-            hass.config_entries.async_forward_entry_setup(entry, 'climate')
+            hass.config_entries.async_forward_entry_setup(entry, "climate")
         )
 
     entry.add_update_listener(async_reload_entry)
@@ -66,7 +64,7 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         hass.data[DOMAIN].pop(entry.entry_id)
 
     api = hass.data[DOMAIN][entry.entry_id]
-    for device in (api.get_locks() + api.get_thermostats()):
+    for device in api.get_locks() + api.get_thermostats():
         device.stop_updater()
 
     return unloaded

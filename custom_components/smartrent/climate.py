@@ -13,7 +13,7 @@ from homeassistant.components.climate.const import (
     SUPPORT_TARGET_TEMPERATURE_RANGE,
     SUPPORT_TARGET_TEMPERATURE,
     FAN_ON,
-    FAN_AUTO
+    FAN_AUTO,
 )
 
 from .const import DOMAIN
@@ -24,18 +24,16 @@ HA_MODE_TO_SMART_RENT = {
     HVAC_MODE_COOL: "cool",
     HVAC_MODE_HEAT: "heat",
     HVAC_MODE_OFF: "off",
-    HVAC_MODE_HEAT_COOL: 'auto'
+    HVAC_MODE_HEAT_COOL: "auto",
 }
 SMARTRENT_MODE_TO_HA = {value: key for key, value in HA_MODE_TO_SMART_RENT.items()}
 
-HA_FAN_TO_SMART_RENT = {
-    FAN_ON: 'on',
-    FAN_AUTO: 'auto'
-}
+HA_FAN_TO_SMART_RENT = {FAN_ON: "on", FAN_AUTO: "auto"}
 SMARTRENT_FAN_TO_HA = {value: key for key, value in HA_FAN_TO_SMART_RENT.items()}
 
 SUPPORT_FAN = [FAN_ON, FAN_AUTO]
 SUPPORT_HVAC = [HVAC_MODE_HEAT, HVAC_MODE_COOL, HVAC_MODE_OFF, HVAC_MODE_HEAT_COOL]
+
 
 async def async_setup_entry(hass, entry, async_add_entities):
     """Setup lock platform."""
@@ -44,15 +42,14 @@ async def async_setup_entry(hass, entry, async_add_entities):
     for thermostat in thermostats:
         async_add_entities([ThermostatEntity(thermostat)])
 
+
 class ThermostatEntity(ClimateEntity):
     def __init__(self, thermo: Thermostat) -> None:
         super().__init__()
         self.device = thermo
 
         self.device.start_updater()
-        self.device.set_update_callback(
-            self.async_schedule_update_ha_state
-        )
+        self.device.set_update_callback(self.async_schedule_update_ha_state)
 
     @property
     def should_poll(self):
@@ -77,10 +74,10 @@ class ThermostatEntity(ClimateEntity):
         fan_mode = self.device.get_fan_mode()
         mode = self.device.get_mode()
 
-        if mode in ['auto', 'off']:
+        if mode in ["auto", "off"]:
             supports_features |= SUPPORT_TARGET_TEMPERATURE_RANGE
 
-        if mode in ['heat', 'cool']:
+        if mode in ["heat", "cool"]:
             supports_features |= SUPPORT_TARGET_TEMPERATURE
 
         # if fan has an active mode, assume fan option exists on thermostat
@@ -109,9 +106,9 @@ class ThermostatEntity(ClimateEntity):
     @property
     def target_temperature(self):
         """Return the temperature we try to reach."""
-        if self.device.get_mode() == 'cool':
+        if self.device.get_mode() == "cool":
             return self.device.get_cooling_setpoint()
-        elif self.device.get_mode() == 'heat':
+        elif self.device.get_mode() == "heat":
             return self.device.get_heating_setpoint()
         else:
             return self.device.get_current_temp()
@@ -156,16 +153,16 @@ class ThermostatEntity(ClimateEntity):
     async def async_set_temperature(self, **kwargs):
         temperature = kwargs.get(ATTR_TEMPERATURE)
         if temperature:
-            if self.device.get_mode() == 'cool':
+            if self.device.get_mode() == "cool":
                 await self.device.async_set_cooling_setpoint(temperature)
             else:
                 await self.device.async_set_heating_setpoint(temperature)
 
-        tt_high = kwargs.get('target_temp_high')
+        tt_high = kwargs.get("target_temp_high")
         if tt_high:
             await self.device.async_set_cooling_setpoint(tt_high)
 
-        tt_low = kwargs.get('target_temp_low')
+        tt_low = kwargs.get("target_temp_low")
         if tt_low:
             await self.device.async_set_heating_setpoint(tt_low)
 
