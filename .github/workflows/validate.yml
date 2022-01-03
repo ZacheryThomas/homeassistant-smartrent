@@ -17,5 +17,10 @@ jobs:
         with:
           category: "integration"
 
+  validate-ha:
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: "actions/checkout@v2"
+
       - name: HA validation
         uses: home-assistant/actions/hassfest@master
