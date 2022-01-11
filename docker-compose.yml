@@ -1,7 +1,7 @@
 version: "3"
 services:
   homeassistant:
-    image: homeassistant/home-assistant:stable
+    image: homeassistant/home-assistant:latest
     ports:
         - 8123:8123
     environment:
