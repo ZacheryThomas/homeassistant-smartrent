@@ -3,6 +3,7 @@
 import logging
 
 from smartrent import async_login
+from smartrent.utils import InvalidAuthError
 
 import voluptuous as vol
 
@@ -49,7 +50,7 @@ class SmartRentFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
             await async_login(
                 user_input[CONF_USERNAME], user_input[CONF_PASSWORD], session
             )
-        except Exception as exc:
+        except InvalidAuthError as exc:
             _LOGGER.error(f"exc: {exc}")
             return await self._show_form({"base": "invalid_auth"})
 
