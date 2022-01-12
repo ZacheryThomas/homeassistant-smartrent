@@ -17,4 +17,5 @@ scene: !include scenes.yaml
 logger:
   default: warning
   logs:
-    smartrent: info
+    custom_components.smartrent: debug
+    smartrent: debug
