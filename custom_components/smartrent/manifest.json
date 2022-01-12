@@ -2,11 +2,11 @@
   "domain": "smartrent",
   "name": "SmartRent",
   "documentation": "https://github.com/ZacheryThomas/homeassistant-smartrent",
-  "issue_tracker": "https://github.com/ZacheryThomas/homeassistant-smartrent",
+  "issue_tracker": "https://github.com/ZacheryThomas/homeassistant-smartrent/issues",
   "dependencies": [],
   "codeowners": ["@zacherythomas"],
   "config_flow": true,
   "requirements": ["smartrent.py==0.1.4"],
   "iot_class": "cloud_push",
-  "version": "0.0.1"
+  "version": "0.0.2"
 }
