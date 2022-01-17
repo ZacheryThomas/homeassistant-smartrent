@@ -8,9 +8,24 @@
 
 This is a basic Homeassistant component to support SmartRent Locks and Thermostats. This component uses the `smartrent.py` library that can be found [here](https://github.com/ZacheryThomas/smartrent.py)!
 
-## Basic Setup
+![example screenshot](docs/dashboard_screenshot.png)
 
-### Moving custom component to right directory
+## Installation
+
+You can either install this integration as an HACS custom component or install it mannually
+### Installing with HACS
+* Select HACS Icon in left menu bar
+* Select `Integrations`
+* Click the `Overflow menu` in the top right corner
+* Select `Custom repositories`
+* For `Repository` enter in `zacherythomas/homeassistant-smartrent` and for `Category` select `Integration`
+* You will then have to restart your Home Assistant instance
+* After that, you can add the Integration as usual by going to `Configuraton > Devices & Services > Add Integration`
+
+
+### Installing manually
+
+#### Moving custom component to right directory
 ```
 └── ...
 └── configuration.yaml
@@ -25,11 +40,10 @@ This is a basic Homeassistant component to support SmartRent Locks and Thermosta
 
 You have to move all content in the `custom_components/smartrent` directory to the same location in Home Assistant. If a `custom_components` directory does not already exist in your Home Assistant instance, you will have to make one. You can learn more [here](https://developers.home-assistant.io/docs/creating_integration_file_structure#where-home-assistant-looks-for-integrations).
 
-### Restarting HA
 After all of those are in place, you can restart your Home Assistant server and the component should load.
 
-### Start the integration
-You should be able to now load the integration. This can be done by going to `config -> devices & services -> + ADD INTEGRATION`
+#### Start the integration
+You should be able to now load the integration. This can be done by going to `Configuraton > Devices & Services > Add Integration`
 
 You should be able to search for SmartRent and then enter your email and password in the popup.
 
