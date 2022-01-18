@@ -8,7 +8,7 @@
 
 This is a basic Homeassistant component to support SmartRent Locks and Thermostats. This component uses the `smartrent.py` library that can be found [here](https://github.com/ZacheryThomas/smartrent.py)!
 
-![example screenshot](docs/dashboard_screenshot.png)
+![example screenshot](dashboard_screenshot.png)
 
 ## Installation
 
@@ -27,9 +27,12 @@ You can either install this integration as an HACS custom component or install i
 
 #### Moving custom component to right directory
 ```
+# How your HA config directory should look
+
+config
 └── ...
 └── configuration.yaml
-└── secrects.yaml
+└── secrets.yaml
 └── custom_components
     └── smartrent
         └── climate.py
