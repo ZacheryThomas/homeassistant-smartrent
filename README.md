@@ -7,7 +7,7 @@
 [![Downloads][downloads-shield]][releases]
 
 
-This is a basic Homeassistant component to support SmartRent Locks and Thermostats. This component uses the `smartrent.py` library that can be found [here](https://github.com/ZacheryThomas/smartrent.py)!
+This is a basic Homeassistant component to support SmartRent Locks, Thermostats, Leak Sensors and Binary Switches. This component uses the `smartrent.py` library that can be found [here](https://github.com/ZacheryThomas/smartrent.py)!
 
 ![example screenshot](dashboard_screenshot.png)
 
@@ -15,12 +15,10 @@ This is a basic Homeassistant component to support SmartRent Locks and Thermosta
 
 You can either install this integration as an HACS custom component or install it mannually
 ### Installing with HACS
-* Select HACS Icon in left menu bar
-* Select `Integrations`
+* Go to the `HACS` tab and select `Integrations`
 * Click on `Explore & Download Repositories`
-* Search for `SmartRent` and open the result that is returned
-* You can then download the repo by clicking `Download this repository with HACS`
-* You will then have to restart your Home Assistant instance
+* Search for `SmartRent` and then download the repo by clicking `Download this repository with HACS`
+* *You will then have to restart your Home Assistant instance*
 * After that, you can add the Integration as usual by going to `Configuraton > Devices & Services > Add Integration`
 
 
@@ -44,7 +42,7 @@ config
 
 You have to move all content in the `custom_components/smartrent` directory to the same location in Home Assistant. If a `custom_components` directory does not already exist in your Home Assistant instance, you will have to make one. You can learn more [here](https://developers.home-assistant.io/docs/creating_integration_file_structure#where-home-assistant-looks-for-integrations).
 
-After all of those are in place, you can restart your Home Assistant server and the component should load.
+After all of those are in place, you can restart your Home Assistant instance and the component should load.
 
 #### Start the integration
 You should be able to now load the integration. This can be done by going to `Configuraton > Devices & Services > Add Integration`

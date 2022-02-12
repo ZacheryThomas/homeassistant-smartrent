@@ -46,6 +46,16 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
             hass.config_entries.async_forward_entry_setup(entry, "climate")
         )
 
+    if api.get_switches():
+        hass.async_add_job(
+            hass.config_entries.async_forward_entry_setup(entry, "switch")
+        )
+
+    if api.get_leak_sensors():
+        hass.async_add_job(
+            hass.config_entries.async_forward_entry_setup(entry, "binary_sensor")
+        )
+
     entry.add_update_listener(async_reload_entry)
     return True
 
