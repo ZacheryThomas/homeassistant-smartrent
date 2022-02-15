@@ -9,6 +9,8 @@
 
 This is a basic Homeassistant component to support SmartRent Locks, Thermostats, Leak Sensors and Binary Switches. This component uses the `smartrent.py` library that can be found [here](https://github.com/ZacheryThomas/smartrent.py)!
 
+Feel free to ⭐️ this repo to get notified about the latest features!
+
 ![example screenshot](dashboard_screenshot.png)
 
 ## Installation
