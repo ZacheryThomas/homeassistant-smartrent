@@ -12,6 +12,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from smartrent import async_login
+from smartrent.api import API
 
 from .const import (
     CONF_PASSWORD,
@@ -70,12 +71,12 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             ]
         )
     )
+    api: API = hass.data[DOMAIN][entry.entry_id]
+    for device in api.get_device_list():
+        device.stop_updater()
+
     if unloaded:
         hass.data[DOMAIN].pop(entry.entry_id)
-
-    api = hass.data[DOMAIN][entry.entry_id]
-    for device in api.get_locks() + api.get_thermostats():
-        device.stop_updater()
 
     return unloaded
 
