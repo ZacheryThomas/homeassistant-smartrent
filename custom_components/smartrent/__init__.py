@@ -33,23 +33,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
 
     hass.data[DOMAIN][entry.entry_id] = api
 
-    if api.get_locks():
-        hass.async_add_job(hass.config_entries.async_forward_entry_setup(entry, "lock"))
-
-    if api.get_thermostats():
-        hass.async_add_job(
-            hass.config_entries.async_forward_entry_setup(entry, "climate")
-        )
-
-    if api.get_switches():
-        hass.async_add_job(
-            hass.config_entries.async_forward_entry_setup(entry, "switch")
-        )
-
-    if api.get_leak_sensors():
-        hass.async_add_job(
-            hass.config_entries.async_forward_entry_setup(entry, "binary_sensor")
-        )
+    for platform in PLATFORMS:
+        hass.async_add_job(hass.config_entries.async_forward_entry_setup(entry, platform))
 
     entry.add_update_listener(async_reload_entry)
     return True
