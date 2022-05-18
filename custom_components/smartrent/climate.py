@@ -1,4 +1,4 @@
-"""Platform for lock integration."""
+"""Platform for climate integration."""
 import logging
 
 from homeassistant.components.climate import ClimateEntity
@@ -37,7 +37,7 @@ SUPPORT_HVAC = [HVAC_MODE_HEAT, HVAC_MODE_COOL, HVAC_MODE_OFF, HVAC_MODE_HEAT_CO
 
 
 async def async_setup_entry(hass, entry, async_add_entities):
-    """Setup lock platform."""
+    """Setup climate platform."""
     client = hass.data[DOMAIN][entry.entry_id]
     thermostats = client.get_thermostats()
     for thermostat in thermostats:
@@ -63,7 +63,7 @@ class ThermostatEntity(ClimateEntity):
 
     @property
     def name(self):
-        """Return the display name of this lock."""
+        """Return the display name of this thermostat."""
         return self.device._name
 
     @property

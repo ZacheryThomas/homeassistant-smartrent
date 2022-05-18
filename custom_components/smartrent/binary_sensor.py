@@ -1,4 +1,4 @@
-"""Platform for lock integration."""
+"""Platform for binary sensor integration."""
 import logging
 from typing import Union
 
@@ -11,7 +11,7 @@ _LOGGER = logging.getLogger(__name__)
 
 
 async def async_setup_entry(hass, entry, async_add_entities):
-    """Setup lock platform."""
+    """Setup binary sensor platform."""
     client: API = hass.data["smartrent"][entry.entry_id]
     leak_sensors = client.get_leak_sensors()
     for leak_sensor in leak_sensors:
