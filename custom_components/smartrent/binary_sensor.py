@@ -1,6 +1,5 @@
 """Platform for lock integration."""
 import logging
-from asyncio import create_task
 from typing import Union
 
 from homeassistant.components.binary_sensor import BinarySensorEntity

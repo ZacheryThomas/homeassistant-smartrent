@@ -15,7 +15,7 @@ from .const import DOMAIN
 _LOGGER = logging.getLogger(__name__)
 
 
-class SmartRentFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
+class SmartRentFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):  # type: ignore
     """Handle a SmartRent config flow."""
 
     def __init__(self) -> None:
@@ -53,5 +53,5 @@ class SmartRentFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
             _LOGGER.error(f"exc: {exc}")
             return await self._show_form({"base": "invalid_auth"})
 
-        _LOGGER.info(f"created entry!")
+        _LOGGER.info("created entry!")
         return self.async_create_entry(title=user_input[CONF_USERNAME], data=user_input)

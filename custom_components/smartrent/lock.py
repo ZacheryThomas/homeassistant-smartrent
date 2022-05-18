@@ -46,7 +46,7 @@ class LockEnt(LockEntity):
         return self.device._name
 
     @property
-    def changed_by(self) -> str:
+    def changed_by(self) -> Union[str, None]:
         return self.device.get_notification()
 
     @property
@@ -55,7 +55,7 @@ class LockEnt(LockEntity):
 
     @property
     def is_jammed(self) -> Union[bool, None]:
-        return "ALARM_TYPE_9" in self.device.get_notification()
+        return "ALARM_TYPE_9" in str(self.device.get_notification())
 
     async def async_lock(self):
         await self.device.async_set_locked(True)
