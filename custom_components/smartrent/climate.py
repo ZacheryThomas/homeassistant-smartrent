@@ -1,20 +1,21 @@
 """Platform for lock integration."""
 import logging
-from smartrent import Thermostat
-from homeassistant.components.climate import ClimateEntity
 
-from homeassistant.const import ATTR_TEMPERATURE, TEMP_FAHRENHEIT
+from homeassistant.components.climate import ClimateEntity
 from homeassistant.components.climate.const import (
+    FAN_AUTO,
+    FAN_ON,
     HVAC_MODE_COOL,
     HVAC_MODE_HEAT,
-    HVAC_MODE_OFF,
     HVAC_MODE_HEAT_COOL,
+    HVAC_MODE_OFF,
     SUPPORT_FAN_MODE,
-    SUPPORT_TARGET_TEMPERATURE_RANGE,
     SUPPORT_TARGET_TEMPERATURE,
-    FAN_ON,
-    FAN_AUTO,
+    SUPPORT_TARGET_TEMPERATURE_RANGE,
 )
+from homeassistant.const import ATTR_TEMPERATURE, TEMP_FAHRENHEIT
+
+from smartrent import Thermostat
 
 from .const import DOMAIN
 

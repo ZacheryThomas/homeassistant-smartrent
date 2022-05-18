@@ -1,11 +1,10 @@
 """Platform for lock integration."""
 import logging
-from smartrent import DoorLock
-
 from typing import Union
 
 from homeassistant.components.lock import SUPPORT_OPEN, LockEntity
 
+from smartrent import DoorLock
 
 _LOGGER = logging.getLogger(__name__)
 

@@ -1,13 +1,12 @@
 """Platform for lock integration."""
-from asyncio import create_task
 import logging
-from smartrent import BinarySwitch
-from smartrent.api import API
-
+from asyncio import create_task
 from typing import Union
 
 from homeassistant.components.switch import SwitchEntity
 
+from smartrent import BinarySwitch
+from smartrent.api import API
 
 _LOGGER = logging.getLogger(__name__)
 
