@@ -14,10 +14,11 @@ from homeassistant.components.climate.const import (
     SUPPORT_TARGET_TEMPERATURE_RANGE,
 )
 from homeassistant.const import ATTR_TEMPERATURE, TEMP_FAHRENHEIT
+from homeassistant.helpers.device_registry import DeviceEntryType
 
 from smartrent import Thermostat
 
-from .const import DOMAIN
+from .const import CONFIGURATION_URL, DOMAIN, PROPER_NAME
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -184,3 +185,14 @@ class ThermostatEntity(ClimateEntity):
     def fan_modes(self):
         """List of available fan modes."""
         return SUPPORT_FAN
+
+    @property
+    def device_info(self):
+        return dict(
+            identifiers={("id", self.device._device_id)},
+            name=str(self.name),
+            manufacturer=PROPER_NAME,
+            model=str(self.device.__class__.__name__),
+            entry_type=DeviceEntryType.SERVICE,
+            configuration_url=CONFIGURATION_URL,
+        )

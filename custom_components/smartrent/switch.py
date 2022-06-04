@@ -3,9 +3,12 @@ import logging
 from typing import Union
 
 from homeassistant.components.switch import SwitchEntity
+from homeassistant.helpers.device_registry import DeviceEntryType
 
 from smartrent import BinarySwitch
 from smartrent.api import API
+
+from .const import CONFIGURATION_URL, PROPER_NAME
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -49,3 +52,14 @@ class SwitchEnt(SwitchEntity):
 
     async def async_turn_off(self):
         await self.device.async_set_on(False)
+
+    @property
+    def device_info(self):
+        return dict(
+            identifiers={("id", self.device._device_id)},
+            name=str(self.name),
+            manufacturer=PROPER_NAME,
+            model=str(self.device.__class__.__name__),
+            entry_type=DeviceEntryType.SERVICE,
+            configuration_url=CONFIGURATION_URL,
+        )

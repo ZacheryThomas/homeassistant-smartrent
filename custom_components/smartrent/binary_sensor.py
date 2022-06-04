@@ -3,9 +3,12 @@ import logging
 from typing import Union
 
 from homeassistant.components.binary_sensor import BinarySensorEntity
+from homeassistant.helpers.device_registry import DeviceEntryType
 
 from smartrent import LeakSensor
 from smartrent.api import API
+
+from .const import CONFIGURATION_URL, PROPER_NAME
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -15,10 +18,10 @@ async def async_setup_entry(hass, entry, async_add_entities):
     client: API = hass.data["smartrent"][entry.entry_id]
     leak_sensors = client.get_leak_sensors()
     for leak_sensor in leak_sensors:
-        async_add_entities([SensorEnt(leak_sensor)])
+        async_add_entities([BinarySensorEnt(leak_sensor)])
 
 
-class SensorEnt(BinarySensorEntity):
+class BinarySensorEnt(BinarySensorEntity):
     def __init__(self, leak_sensor: LeakSensor) -> None:
         super().__init__()
         self.device = leak_sensor
@@ -47,3 +50,14 @@ class SensorEnt(BinarySensorEntity):
     @property
     def is_on(self) -> Union[bool, None]:
         return self.device.get_leak()
+
+    @property
+    def device_info(self):
+        return dict(
+            identifiers={("id", self.device._device_id)},
+            name=str(self.name),
+            manufacturer=PROPER_NAME,
+            model=str(self.device.__class__.__name__),
+            entry_type=DeviceEntryType.SERVICE,
+            configuration_url=CONFIGURATION_URL,
+        )

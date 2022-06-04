@@ -3,8 +3,11 @@ import logging
 from typing import Union
 
 from homeassistant.components.lock import SUPPORT_OPEN, LockEntity
+from homeassistant.helpers.device_registry import DeviceEntryType
 
 from smartrent import DoorLock
+
+from .const import CONFIGURATION_URL, PROPER_NAME
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -62,3 +65,14 @@ class LockEnt(LockEntity):
 
     async def async_unlock(self):
         await self.device.async_set_locked(False)
+
+    @property
+    def device_info(self):
+        return dict(
+            identifiers={("id", self.device._device_id)},
+            name=str(self.name),
+            manufacturer=PROPER_NAME,
+            model=str(self.device.__class__.__name__),
+            entry_type=DeviceEntryType.SERVICE,
+            configuration_url=CONFIGURATION_URL,
+        )
