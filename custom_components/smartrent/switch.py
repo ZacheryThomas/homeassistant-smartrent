@@ -4,7 +4,6 @@ from typing import Union
 
 from homeassistant.components.switch import SwitchEntity
 from homeassistant.helpers.device_registry import DeviceEntryType
-
 from smartrent import BinarySwitch
 from smartrent.api import API
 

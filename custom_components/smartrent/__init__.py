@@ -7,8 +7,10 @@ https://github.com/custom-components/integration_blueprint
 import asyncio
 import logging
 
+from aiohttp.client_exceptions import ClientConnectorError
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from smartrent import async_login
@@ -34,7 +36,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     hass.data[DOMAIN][entry.entry_id] = api
 
     for platform in PLATFORMS:
-        hass.async_add_job(hass.config_entries.async_forward_entry_setup(entry, platform))
+        hass.async_add_job(
+            hass.config_entries.async_forward_entry_setup(entry, platform)
+        )
 
     entry.add_update_listener(async_reload_entry)
     return True

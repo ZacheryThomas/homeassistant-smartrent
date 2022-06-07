@@ -1,18 +1,18 @@
 """Platform for sensor integration."""
 import logging
-from typing import Union, Optional
+from typing import Optional, Union
 
 from smartrent import DoorLock, LeakSensor, Thermostat
 from smartrent.api import API
 
 _LOGGER = logging.getLogger(__name__)
 
-from homeassistant.helpers.device_registry import DeviceEntryType
 from homeassistant.components.sensor import SensorEntity, SensorStateClass
-from homeassistant.const import (PERCENTAGE, TEMP_FAHRENHEIT)
+from homeassistant.const import PERCENTAGE, TEMP_FAHRENHEIT
+from homeassistant.helpers.device_registry import DeviceEntryType
 
+from .const import CONFIGURATION_URL, PROPER_NAME
 
-from .const import PROPER_NAME, CONFIGURATION_URL
 
 async def async_setup_entry(hass, entry, async_add_entities):
     """Setup sensor platform."""
@@ -23,42 +23,48 @@ async def async_setup_entry(hass, entry, async_add_entities):
 
     sensors_dict = {
         Thermostat: {
-            'temperature': [
-                'current_temp',
+            "temperature": [
+                "current_temp",
             ],
-            'humidity': [
-                'current_humidity',
+            "humidity": [
+                "current_humidity",
             ],
-            'misc': [
-                'fan_mode',
-                'mode',
-            ]
+            "misc": [
+                "fan_mode",
+                "mode",
+            ],
         },
         DoorLock: {
-            'battery': [
-                'battery_level',
+            "battery": [
+                "battery_level",
             ],
-            'misc': [
-                'notification',
-                'locked',
-            ]
+            "misc": [
+                "notification",
+                "locked",
+            ],
         },
         LeakSensor: {
-            'battery': [
-                'battery_level',
+            "battery": [
+                "battery_level",
             ]
-        }
+        },
     }
 
     for dev in devs:
         device = sensors_dict.get(type(dev))
         for device_class in device.keys():
             for sensor_name in device[device_class]:
-                device_class = None if device_class == 'misc' else device_class
+                device_class = None if device_class == "misc" else device_class
                 async_add_entities([SensorEnt(dev, sensor_name, device_class)])
 
+
 class SensorEnt(SensorEntity):
-    def __init__(self, device: Union[DoorLock, Thermostat, LeakSensor], sensor_name: str, device_class: str) -> None:
+    def __init__(
+        self,
+        device: Union[DoorLock, Thermostat, LeakSensor],
+        sensor_name: str,
+        device_class: str,
+    ) -> None:
         super().__init__()
         self.device = device
         self.sensor_name = sensor_name
@@ -78,7 +84,7 @@ class SensorEnt(SensorEntity):
 
     @property
     def unique_id(self):
-        sname_id = ''.join([str(ord(char)) for char in self.sensor_name])
+        sname_id = "".join([str(ord(char)) for char in self.sensor_name])
         uid = str(self.device._device_id) + str(sname_id)
 
         return uid
@@ -86,12 +92,12 @@ class SensorEnt(SensorEntity):
     @property
     def name(self):
         """Return the display name of this sensor."""
-        return self.device._name + ' ' + self.sensor_name
+        return self.device._name + " " + self.sensor_name
 
     @property
     def native_value(self):
         """Return native value for entity."""
-        return getattr(self.device, f'get_{self.sensor_name}')()
+        return getattr(self.device, f"get_{self.sensor_name}")()
 
     @property
     def device_class(self):
@@ -103,9 +109,9 @@ class SensorEnt(SensorEntity):
 
     @property
     def native_unit_of_measurement(self):
-        if self._device_class == 'temperature':
+        if self._device_class == "temperature":
             return TEMP_FAHRENHEIT
-        if self._device_class in ['humidity', 'battery']:
+        if self._device_class in ["humidity", "battery"]:
             return PERCENTAGE
 
     @property
@@ -117,4 +123,3 @@ class SensorEnt(SensorEntity):
             entry_type=DeviceEntryType.SERVICE,
             configuration_url=CONFIGURATION_URL,
         )
-

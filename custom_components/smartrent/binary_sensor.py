@@ -4,7 +4,6 @@ from typing import Union
 
 from homeassistant.components.binary_sensor import BinarySensorEntity
 from homeassistant.helpers.device_registry import DeviceEntryType
-
 from smartrent import LeakSensor
 from smartrent.api import API
 
