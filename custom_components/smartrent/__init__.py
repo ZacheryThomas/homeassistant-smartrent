@@ -31,7 +31,10 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     password = entry.data.get(CONF_PASSWORD)
 
     session = async_get_clientsession(hass)
-    api = await async_login(username, password, session)
+    try:
+        api = await async_login(username, password, session)
+    except ClientConnectorError as exception:
+        raise ConfigEntryNotReady from exception
 
     hass.data[DOMAIN][entry.entry_id] = api
 
