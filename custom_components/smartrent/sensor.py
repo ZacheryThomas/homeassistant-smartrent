@@ -23,18 +23,18 @@ async def async_setup_entry(hass, entry, async_add_entities):
             [
                 SensorEnt(thermo, "current_temp", "temperature"),
                 SensorEnt(thermo, "current_humidity", "humidity"),
-                SensorEnt(thermo, "mode", "misc"),
+                SensorEnt(thermo, "mode"),
             ]
         )
         if thermo.get_fan_mode():
-            async_add_entities([SensorEnt(thermo, "fan_mode", "misc")])
+            async_add_entities([SensorEnt(thermo, "fan_mode")])
 
     for lock in client.get_locks():
         async_add_entities(
             [
                 SensorEnt(lock, "battery_level", "battery"),
-                SensorEnt(lock, "notification", "misc"),
-                SensorEnt(lock, "locked", "misc"),
+                SensorEnt(lock, "notification"),
+                SensorEnt(lock, "locked"),
             ]
         )
 
@@ -47,7 +47,7 @@ class SensorEnt(SensorEntity):
         self,
         device: Union[DoorLock, Thermostat, LeakSensor],
         sensor_name: str,
-        device_class: str,
+        device_class: Optional[str] = None,
     ) -> None:
         super().__init__()
         self.device = device
