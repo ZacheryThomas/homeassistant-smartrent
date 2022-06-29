@@ -16,46 +16,30 @@ from .const import CONFIGURATION_URL, PROPER_NAME
 
 async def async_setup_entry(hass, entry, async_add_entities):
     """Setup sensor platform."""
-    devs: Optional[Union[DoorLock, Thermostat]] = []
     client: API = hass.data["smartrent"][entry.entry_id]
 
-    devs = client.get_device_list()
-
-    sensors_dict = {
-        Thermostat: {
-            "temperature": [
-                "current_temp",
-            ],
-            "humidity": [
-                "current_humidity",
-            ],
-            "misc": [
-                "fan_mode",
-                "mode",
-            ],
-        },
-        DoorLock: {
-            "battery": [
-                "battery_level",
-            ],
-            "misc": [
-                "notification",
-                "locked",
-            ],
-        },
-        LeakSensor: {
-            "battery": [
-                "battery_level",
+    for thermo in client.get_thermostats():
+        async_add_entities(
+            [
+                SensorEnt(thermo, "current_temp", "temperature"),
+                SensorEnt(thermo, "current_humidity", "humidity"),
+                SensorEnt(thermo, "mode", "misc"),
             ]
-        },
-    }
+        )
+        if thermo.get_fan_mode():
+            async_add_entities([SensorEnt(thermo, "fan_mode", "misc")])
 
-    for dev in devs:
-        device = sensors_dict.get(type(dev))
-        for device_class in device.keys():
-            for sensor_name in device[device_class]:
-                device_class = None if device_class == "misc" else device_class
-                async_add_entities([SensorEnt(dev, sensor_name, device_class)])
+    for lock in client.get_locks():
+        async_add_entities(
+            [
+                SensorEnt(lock, "battery_level", "battery"),
+                SensorEnt(lock, "notification", "misc"),
+                SensorEnt(lock, "locked", "misc"),
+            ]
+        )
+
+    for leak_sensor in client.get_leak_sensors():
+        async_add_entities([SensorEnt(leak_sensor, "battery_level", "battery")])
 
 
 class SensorEnt(SensorEntity):
