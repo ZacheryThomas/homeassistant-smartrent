@@ -6,7 +6,7 @@
   "dependencies": [],
   "codeowners": ["@zacherythomas"],
   "config_flow": true,
-  "requirements": ["smartrent.py==0.2.5"],
+  "requirements": ["smartrent.py==0.2.7"],
   "iot_class": "cloud_push",
   "version": "0.2.2"
 }
