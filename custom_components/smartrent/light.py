@@ -71,6 +71,7 @@ class SmartrentLightEntity(LightEntity):
     @property
     def brigthness(self) -> int:
         """Return the brightness of this light between 0..255."""
+        # store current level in case light turns off & we have a refrence how bright light used to be
         self._prev_level_in_ha = self.device.get_level() or self._prev_level_in_ha
         return round((self.device.get_level() * 255.0) / 100.0)
 
