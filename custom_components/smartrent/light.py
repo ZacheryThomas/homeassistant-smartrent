@@ -23,6 +23,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
     for ml_switch in ml_switches:
         async_add_entities([LightEntity(ml_switch)])
 
+
 class SmartrentLightEntity(LightEntity):
     def __init__(self, ml_switch: MultilevelSwitch) -> None:
         super().__init__()
