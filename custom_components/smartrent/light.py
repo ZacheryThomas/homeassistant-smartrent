@@ -21,7 +21,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
     client = hass.data[DOMAIN][entry.entry_id]
     ml_switches = client.get_multilevel_switches()
     for ml_switch in ml_switches:
-        async_add_entities([LightEntity(ml_switch)])
+        async_add_entities([SmartrentLightEntity(ml_switch)])
 
 
 class SmartrentLightEntity(LightEntity):
@@ -84,11 +84,11 @@ class SmartrentLightEntity(LightEntity):
         brightness = brightness or self._prev_level_in_ha
 
         self._prev_level_in_ha = brightness
-        await self.device.set_level(brightness)
+        await self.device.async_set_level(brightness)
 
     async def async_turn_off(self, **kwargs: Any) -> None:
         """Turn the light off."""
-        await self.device.set_level(0)
+        await self.device.async_set_level(0)
 
     @property
     def device_info(self):
