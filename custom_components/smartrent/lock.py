@@ -16,10 +16,10 @@ async def async_setup_entry(hass, entry, async_add_entities):
     client = hass.data["smartrent"][entry.entry_id]
     locks = client.get_locks()
     for lock in locks:
-        async_add_entities([LockEnt(lock)])
+        async_add_entities([SmartrentLock(lock)])
 
 
-class LockEnt(LockEntity):
+class SmartrentLock(LockEntity):
     def __init__(self, lock: DoorLock) -> None:
         super().__init__()
         self.device = lock
@@ -40,6 +40,7 @@ class LockEnt(LockEntity):
 
     @property
     def unique_id(self):
+        """Return a unique ID."""
         return self.device._device_id
 
     @property

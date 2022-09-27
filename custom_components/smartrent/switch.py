@@ -17,10 +17,10 @@ async def async_setup_entry(hass, entry, async_add_entities):
     client: API = hass.data["smartrent"][entry.entry_id]
     switches = client.get_binary_switches()
     for switch in switches:
-        async_add_entities([SwitchEnt(switch)])
+        async_add_entities([SmartrentBinarySwitch(switch)])
 
 
-class SwitchEnt(SwitchEntity):
+class SmartrentBinarySwitch(SwitchEntity):
     def __init__(self, switch: BinarySwitch) -> None:
         super().__init__()
         self.device = switch

@@ -41,10 +41,10 @@ async def async_setup_entry(hass, entry, async_add_entities):
     client = hass.data[DOMAIN][entry.entry_id]
     thermostats = client.get_thermostats()
     for thermostat in thermostats:
-        async_add_entities([ThermostatEntity(thermostat)])
+        async_add_entities([SmartrentThermostat(thermostat)])
 
 
-class ThermostatEntity(ClimateEntity):
+class SmartrentThermostat(ClimateEntity):
     def __init__(self, thermo: Thermostat) -> None:
         super().__init__()
         self.device = thermo
@@ -59,6 +59,7 @@ class ThermostatEntity(ClimateEntity):
 
     @property
     def unique_id(self):
+        """Return a unique ID."""
         return self.device._device_id
 
     @property
