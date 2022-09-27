@@ -15,7 +15,7 @@ _LOGGER = logging.getLogger(__name__)
 async def async_setup_entry(hass, entry, async_add_entities):
     """Setup switch platform."""
     client: API = hass.data["smartrent"][entry.entry_id]
-    switches = client.get_switches()
+    switches = client.get_binary_switches()
     for switch in switches:
         async_add_entities([SmartrentBinarySwitch(switch)])
 
