@@ -21,28 +21,28 @@ async def async_setup_entry(hass, entry, async_add_entities):
     for thermo in client.get_thermostats():
         async_add_entities(
             [
-                SensorEnt(thermo, "current_temp", "temperature"),
-                SensorEnt(thermo, "current_humidity", "humidity"),
-                SensorEnt(thermo, "mode"),
+                SmartrentSensor(thermo, "current_temp", "temperature"),
+                SmartrentSensor(thermo, "current_humidity", "humidity"),
+                SmartrentSensor(thermo, "mode"),
             ]
         )
         if thermo.get_fan_mode():
-            async_add_entities([SensorEnt(thermo, "fan_mode")])
+            async_add_entities([SmartrentSensor(thermo, "fan_mode")])
 
     for lock in client.get_locks():
         async_add_entities(
             [
-                SensorEnt(lock, "battery_level", "battery"),
-                SensorEnt(lock, "notification"),
-                SensorEnt(lock, "locked"),
+                SmartrentSensor(lock, "battery_level", "battery"),
+                SmartrentSensor(lock, "notification"),
+                SmartrentSensor(lock, "locked"),
             ]
         )
 
     for leak_sensor in client.get_leak_sensors():
-        async_add_entities([SensorEnt(leak_sensor, "battery_level", "battery")])
+        async_add_entities([SmartrentSensor(leak_sensor, "battery_level", "battery")])
 
 
-class SensorEnt(SensorEntity):
+class SmartrentSensor(SensorEntity):
     def __init__(
         self,
         device: Union[DoorLock, Thermostat, LeakSensor],

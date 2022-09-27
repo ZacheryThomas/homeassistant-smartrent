@@ -17,10 +17,10 @@ async def async_setup_entry(hass, entry, async_add_entities):
     client: API = hass.data["smartrent"][entry.entry_id]
     leak_sensors = client.get_leak_sensors()
     for leak_sensor in leak_sensors:
-        async_add_entities([BinarySensorEnt(leak_sensor)])
+        async_add_entities([SmartrentBinarySensor(leak_sensor)])
 
 
-class BinarySensorEnt(BinarySensorEntity):
+class SmartrentBinarySensor(BinarySensorEntity):
     def __init__(self, leak_sensor: LeakSensor) -> None:
         super().__init__()
         self.device = leak_sensor

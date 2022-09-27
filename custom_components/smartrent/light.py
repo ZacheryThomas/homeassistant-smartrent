@@ -21,10 +21,10 @@ async def async_setup_entry(hass, entry, async_add_entities):
     client = hass.data[DOMAIN][entry.entry_id]
     ml_switches = client.get_multilevel_switches()
     for ml_switch in ml_switches:
-        async_add_entities([SmartrentLightEntity(ml_switch)])
+        async_add_entities([SmartrentLight(ml_switch)])
 
 
-class SmartrentLightEntity(LightEntity):
+class SmartrentLight(LightEntity):
     def __init__(self, ml_switch: MultilevelSwitch) -> None:
         super().__init__()
 
