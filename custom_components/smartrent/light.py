@@ -65,7 +65,7 @@ class SmartrentLight(LightEntity):
         return COLOR_MODE_BRIGHTNESS
 
     @property
-    def is_on(self) -> Optional[bool]:
+    def is_on(self) -> bool:
         """Return true if light is on."""
         return bool(self.device.get_level())
 
