@@ -70,11 +70,14 @@ class SmartrentLight(LightEntity):
         return bool(self.device.get_level())
 
     @property
-    def brigthness(self) -> int:
+    def brightness(self) -> int:
         """Return the brightness of this light between 0..255."""
+        brightness = self.device.get_level()
+
         # store current level in case light turns off & we have a refrence how bright light used to be
-        self._prev_level_in_ha = self.device.get_level() or self._prev_level_in_ha
-        return round((self.device.get_level() * 255.0) / 100.0)
+        self._prev_level_in_ha = brightness or self._prev_level_in_ha
+
+        return round((brightness * 255.0) / 100.0)
 
     async def async_turn_on(self, **kwargs: Any) -> None:
         """Turn the light on."""
