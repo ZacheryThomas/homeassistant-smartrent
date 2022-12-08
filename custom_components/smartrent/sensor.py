@@ -22,12 +22,13 @@ async def async_setup_entry(hass, entry, async_add_entities):
         async_add_entities(
             [
                 SmartrentSensor(thermo, "current_temp", "temperature"),
-                SmartrentSensor(thermo, "current_humidity", "humidity"),
                 SmartrentSensor(thermo, "mode"),
             ]
         )
         if thermo.get_fan_mode():
             async_add_entities([SmartrentSensor(thermo, "fan_mode")])
+        if thermo.get_current_humidity():
+            async_add_entities([SmartrentSensor(thermo, "current_humidity", "humidity")])
 
     for lock in client.get_locks():
         async_add_entities(
