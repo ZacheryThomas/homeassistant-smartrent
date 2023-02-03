@@ -1,6 +1,6 @@
 """Platform for lock integration."""
 import logging
-from typing import Union
+from typing import Union, Any
 
 from homeassistant.components.lock import SUPPORT_OPEN, LockEntity
 from homeassistant.helpers.device_registry import DeviceEntryType
