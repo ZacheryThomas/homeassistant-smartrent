@@ -60,10 +60,10 @@ class SmartrentLock(LockEntity):
     def is_jammed(self) -> Union[bool, None]:
         return "ALARM_TYPE_9" in str(self.device.get_notification())
 
-    async def async_lock(self):
+    async def async_lock(self, **kwargs: Any):
         await self.device.async_set_locked(True)
 
-    async def async_unlock(self):
+    async def async_unlock(self, **kwargs: Any):
         await self.device.async_set_locked(False)
 
     @property

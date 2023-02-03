@@ -1,6 +1,6 @@
 """Platform for switch integration."""
 import logging
-from typing import Union
+from typing import Union, Any
 
 from homeassistant.components.switch import SwitchEntity
 from homeassistant.helpers.device_registry import DeviceEntryType
@@ -46,10 +46,10 @@ class SmartrentBinarySwitch(SwitchEntity):
     def is_on(self) -> Union[bool, None]:
         return self.device.get_on()
 
-    async def async_turn_on(self):
+    async def async_turn_on(self, **kwargs: Any):
         await self.device.async_set_on(True)
 
-    async def async_turn_off(self):
+    async def async_turn_off(self, **kwargs: Any):
         await self.device.async_set_on(False)
 
     @property
