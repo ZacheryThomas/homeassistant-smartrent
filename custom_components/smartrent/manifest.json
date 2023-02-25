@@ -8,5 +8,5 @@
   "config_flow": true,
   "requirements": ["smartrent.py==0.4.0"],
   "iot_class": "cloud_push",
-  "version": "0.3.5"
+  "version": "0.3.6"
 }
