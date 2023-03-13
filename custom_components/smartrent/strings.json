@@ -3,10 +3,11 @@
     "step": {
       "user": {
         "title": "Configure SmartRent",
-        "description": "Enter your SmartRent credentials.",
+        "description": "Enter your SmartRent credentials",
         "data": {
           "username": "Email",
-          "password": "Password"
+          "password": "Password",
+          "token": "2fa Code (optional)"
         }
       }
     },

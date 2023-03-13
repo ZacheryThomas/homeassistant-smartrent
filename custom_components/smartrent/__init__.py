@@ -10,13 +10,21 @@ import logging
 from aiohttp.client_exceptions import ClientConnectorError
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
-from homeassistant.exceptions import ConfigEntryNotReady
+from homeassistant.exceptions import ConfigEntryAuthFailed, ConfigEntryNotReady
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
+from smartrent.api import API
+from smartrent.utils import InvalidAuthError
 
 from smartrent import async_login
-from smartrent.api import API
 
-from .const import CONF_PASSWORD, CONF_USERNAME, DOMAIN, PLATFORMS, STARTUP_MESSAGE
+from .const import (
+    CONF_PASSWORD,
+    CONF_TOKEN,
+    CONF_USERNAME,
+    DOMAIN,
+    PLATFORMS,
+    STARTUP_MESSAGE,
+)
 
 _LOGGER: logging.Logger = logging.getLogger(__package__)
 
@@ -29,12 +37,17 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
 
     username = entry.data.get(CONF_USERNAME)
     password = entry.data.get(CONF_PASSWORD)
+    tfa_token = entry.data.get(CONF_TOKEN)
 
     session = async_get_clientsession(hass)
     try:
-        api = await async_login(username, password, session)
+        api = await async_login(username, password, session, tfa_token=tfa_token)
+    except InvalidAuthError as exception:
+        raise ConfigEntryAuthFailed("Credentials expired!") from exception
     except ClientConnectorError as exception:
         raise ConfigEntryNotReady from exception
+    except EOFError as exception:
+        raise ConfigEntryAuthFailed("TFA not supplied. Please Reauth!") from exception
 
     hass.data[DOMAIN][entry.entry_id] = api
 
