@@ -7,15 +7,12 @@ on:
     - cron: "0 0 * * *"
 
 jobs:
-  black:
-    name: Check Black
-    runs-on: "ubuntu-latest"
+  pre-commit:
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-
-      - uses: rickstaa/action-black@v1
-        with:
-          black_args: "custom_components/smartrent --check"
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
+    - uses: pre-commit/action@v3.0.0
 
   validate-hacs:
     runs-on: "ubuntu-latest"
