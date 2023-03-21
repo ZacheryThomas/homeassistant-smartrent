@@ -1,15 +1,12 @@
 """Platform for sensor integration."""
-import logging
 from typing import Optional, Union
-
-from smartrent import DoorLock, LeakSensor, Thermostat
-from smartrent.api import API
-
-_LOGGER = logging.getLogger(__name__)
 
 from homeassistant.components.sensor import SensorEntity, SensorStateClass
 from homeassistant.const import PERCENTAGE, TEMP_FAHRENHEIT
 from homeassistant.helpers.device_registry import DeviceEntryType
+from smartrent.api import API
+
+from smartrent import DoorLock, LeakSensor, Thermostat
 
 from .const import CONFIGURATION_URL, PROPER_NAME
 

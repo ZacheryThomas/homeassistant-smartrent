@@ -1,9 +1,10 @@
 """Platform for lock integration."""
 import logging
-from typing import Union, Any
+from typing import Any, Union
 
 from homeassistant.components.lock import SUPPORT_OPEN, LockEntity
 from homeassistant.helpers.device_registry import DeviceEntryType
+
 from smartrent import DoorLock
 
 from .const import CONFIGURATION_URL, PROPER_NAME
