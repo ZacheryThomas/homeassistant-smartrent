@@ -4,9 +4,8 @@ from typing import Optional, Union
 from homeassistant.components.sensor import SensorEntity, SensorStateClass
 from homeassistant.const import PERCENTAGE, TEMP_FAHRENHEIT
 from homeassistant.helpers.device_registry import DeviceEntryType
-from smartrent.api import API
-
 from smartrent import DoorLock, LeakSensor, Thermostat
+from smartrent.api import API
 
 from .const import CONFIGURATION_URL, PROPER_NAME
 

@@ -8,7 +8,6 @@ from homeassistant.components.light import (
     LightEntity,
 )
 from homeassistant.helpers.device_registry import DeviceEntryType
-
 from smartrent import MultilevelSwitch
 
 from .const import CONFIGURATION_URL, DOMAIN, PROPER_NAME
@@ -31,7 +30,8 @@ class SmartrentLight(LightEntity):
         self.device = ml_switch
 
         # Cache the level from smartrent.
-        # Useful when light is turned on & we want to set it to the previous level it was at when on last.
+        # Useful when light is turned on & we want to set it to the previous level
+        # it was at when on last.
         self._prev_level_in_ha: int = self.device.get_level() or 50
 
         self.device.start_updater()
@@ -74,7 +74,8 @@ class SmartrentLight(LightEntity):
         """Return the brightness of this light between 0..255."""
         brightness = self.device.get_level()
 
-        # store current level in case light turns off & we have a refrence how bright light used to be
+        # store current level in case light turns off
+        # & we have a refrence how bright light used to be
         self._prev_level_in_ha = brightness or self._prev_level_in_ha
 
         return round((brightness * 255.0) / 100.0)

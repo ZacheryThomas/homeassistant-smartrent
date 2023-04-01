@@ -12,10 +12,9 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryAuthFailed, ConfigEntryNotReady
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
+from smartrent import async_login
 from smartrent.api import API
 from smartrent.utils import InvalidAuthError
-
-from smartrent import async_login
 
 from .const import (
     CONF_PASSWORD,

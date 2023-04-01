@@ -15,7 +15,6 @@ from homeassistant.components.climate.const import (
 )
 from homeassistant.const import ATTR_TEMPERATURE, TEMP_FAHRENHEIT
 from homeassistant.helpers.device_registry import DeviceEntryType
-
 from smartrent import Thermostat
 
 from .const import CONFIGURATION_URL, DOMAIN, PROPER_NAME
