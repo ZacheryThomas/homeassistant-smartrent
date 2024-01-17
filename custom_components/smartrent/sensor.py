@@ -2,7 +2,7 @@
 from typing import Optional, Union
 
 from homeassistant.components.sensor import SensorEntity, SensorStateClass
-from homeassistant.const import PERCENTAGE, TEMP_FAHRENHEIT
+from homeassistant.const import PERCENTAGE, UnitOfTemperature
 from homeassistant.helpers.device_registry import DeviceEntryType
 from smartrent import DoorLock, LeakSensor, Thermostat
 from smartrent.api import API
@@ -93,7 +93,7 @@ class SmartrentSensor(SensorEntity):
     @property
     def native_unit_of_measurement(self):
         if self._device_class == "temperature":
-            return TEMP_FAHRENHEIT
+            return UnitOfTemperature.FAHRENHEIT
         if self._device_class in ["humidity", "battery"]:
             return PERCENTAGE
 

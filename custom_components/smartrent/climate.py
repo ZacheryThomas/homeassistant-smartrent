@@ -5,15 +5,10 @@ from homeassistant.components.climate import ClimateEntity
 from homeassistant.components.climate.const import (
     FAN_AUTO,
     FAN_ON,
-    HVAC_MODE_COOL,
-    HVAC_MODE_HEAT,
-    HVAC_MODE_HEAT_COOL,
-    HVAC_MODE_OFF,
-    SUPPORT_FAN_MODE,
-    SUPPORT_TARGET_TEMPERATURE,
-    SUPPORT_TARGET_TEMPERATURE_RANGE,
+    ClimateEntityFeature,
+    HVACMode,
 )
-from homeassistant.const import ATTR_TEMPERATURE, TEMP_FAHRENHEIT
+from homeassistant.const import ATTR_TEMPERATURE, UnitOfTemperature
 from homeassistant.helpers.device_registry import DeviceEntryType
 from smartrent import Thermostat
 
@@ -22,10 +17,10 @@ from .const import CONFIGURATION_URL, DOMAIN, PROPER_NAME
 _LOGGER = logging.getLogger(__name__)
 
 HA_MODE_TO_SMART_RENT = {
-    HVAC_MODE_COOL: "cool",
-    HVAC_MODE_HEAT: "heat",
-    HVAC_MODE_OFF: "off",
-    HVAC_MODE_HEAT_COOL: "auto",
+    HVACMode.COOL: "cool",
+    HVACMode.HEAT: "heat",
+    HVACMode.OFF: "off",
+    HVACMode.HEAT_COOL: "auto",
 }
 SMARTRENT_MODE_TO_HA = {value: key for key, value in HA_MODE_TO_SMART_RENT.items()}
 
@@ -33,7 +28,7 @@ HA_FAN_TO_SMART_RENT = {FAN_ON: "on", FAN_AUTO: "auto"}
 SMARTRENT_FAN_TO_HA = {value: key for key, value in HA_FAN_TO_SMART_RENT.items()}
 
 SUPPORT_FAN = [FAN_ON, FAN_AUTO]
-SUPPORT_HVAC = [HVAC_MODE_HEAT, HVAC_MODE_COOL, HVAC_MODE_OFF, HVAC_MODE_HEAT_COOL]
+SUPPORT_HVAC = [HVACMode.HEAT, HVACMode.COOL, HVACMode.OFF, HVACMode.HEAT_COOL]
 
 
 async def async_setup_entry(hass, entry, async_add_entities):
@@ -77,21 +72,21 @@ class SmartrentThermostat(ClimateEntity):
         mode = self.device.get_mode()
 
         if mode in ["auto", "off"]:
-            supports_features |= SUPPORT_TARGET_TEMPERATURE_RANGE
+            supports_features |= ClimateEntityFeature.TARGET_TEMPERATURE_RANGE
 
         if mode in ["heat", "cool"]:
-            supports_features |= SUPPORT_TARGET_TEMPERATURE
+            supports_features |= ClimateEntityFeature.TARGET_TEMPERATURE
 
         # if fan has an active mode, assume fan option exists on thermostat
         if fan_mode:
-            supports_features |= SUPPORT_FAN_MODE
+            supports_features |= ClimateEntityFeature.FAN_MODE
 
         return supports_features
 
     @property
     def temperature_unit(self):
         """Return the unit of measurement."""
-        return TEMP_FAHRENHEIT
+        return UnitOfTemperature.FAHRENHEIT
 
     @property
     def current_temperature(self):

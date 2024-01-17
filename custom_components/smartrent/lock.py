@@ -2,7 +2,7 @@
 import logging
 from typing import Any, Union
 
-from homeassistant.components.lock import SUPPORT_OPEN, LockEntity
+from homeassistant.components.lock import LockEntity, LockEntityFeature
 from homeassistant.helpers.device_registry import DeviceEntryType
 from smartrent import DoorLock
 
@@ -23,7 +23,7 @@ class SmartrentLock(LockEntity):
     def __init__(self, lock: DoorLock) -> None:
         super().__init__()
         self.device = lock
-        self._attr_supported_features = SUPPORT_OPEN
+        self._attr_supported_features = LockEntityFeature.OPEN
 
         self.device.start_updater()
         self.device.set_update_callback(self.async_schedule_update_ha_state)
@@ -31,7 +31,7 @@ class SmartrentLock(LockEntity):
     @property
     def supported_features(self):
         """Flag supported features."""
-        return SUPPORT_OPEN
+        return LockEntityFeature.OPEN
 
     @property
     def should_poll(self):
