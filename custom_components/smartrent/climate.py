@@ -67,14 +67,13 @@ class SmartrentThermostat(ClimateEntity):
         """Return the list of supported features."""
 
         # binary list of supported features
-        supports_features = 0
+        supports_features = ClimateEntityFeature.TURN_ON | ClimateEntityFeature.TURN_OFF
+
         fan_mode = self.device.get_fan_mode()
         mode = self.device.get_mode()
 
         if mode in ["auto", "off"]:
             supports_features |= ClimateEntityFeature.TARGET_TEMPERATURE_RANGE
-            supports_features |= ClimateEntityFeature.TURN_ON
-            supports_features |= ClimateEntityFeature.TURN_OFF
 
         if mode in ["heat", "cool"]:
             supports_features |= ClimateEntityFeature.TARGET_TEMPERATURE
