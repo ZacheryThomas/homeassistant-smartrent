@@ -4,7 +4,7 @@ from typing import Optional, Union
 from homeassistant.components.sensor import SensorEntity, SensorStateClass
 from homeassistant.const import PERCENTAGE, UnitOfTemperature
 from homeassistant.helpers.device_registry import DeviceEntryType
-from smartrent import DoorLock, LeakSensor, Thermostat
+from smartrent import DoorLock, LeakSensor, MotionSensor, Thermostat
 from smartrent.api import API
 
 from .const import CONFIGURATION_URL, PROPER_NAME
@@ -40,11 +40,13 @@ async def async_setup_entry(hass, entry, async_add_entities):
     for leak_sensor in client.get_leak_sensors():
         async_add_entities([SmartrentSensor(leak_sensor, "battery_level", "battery")])
 
+    for motion_sensor in client.get_motion_sensors():
+        async_add_entities([SmartrentSensor(motion_sensor, "battery_level", "battery")])
 
 class SmartrentSensor(SensorEntity):
     def __init__(
         self,
-        device: Union[DoorLock, Thermostat, LeakSensor],
+        device: Union[DoorLock, Thermostat, LeakSensor, MotionSensor],
         sensor_name: str,
         device_class: Optional[str] = None,
     ) -> None:
