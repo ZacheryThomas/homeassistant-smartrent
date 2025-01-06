@@ -16,8 +16,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
     """Setup binary sensor platform."""
     client: API = hass.data["smartrent"][entry.entry_id]
 
-    leak_sensors = client.get_leak_sensors()
-    for leak_sensor in leak_sensors:
+    for leak_sensor in client.get_leak_sensors():
         async_add_entities([SmartrentBinarySensor(leak_sensor, BinarySensorDeviceClass.MOISTURE)])
 
     for motion_sensor in client.get_motion_sensors():
@@ -27,9 +26,9 @@ async def async_setup_entry(hass, entry, async_add_entities):
 class SmartrentBinarySensor(BinarySensorEntity):
     def __init__(self, sensor: Sensor, device_class: BinarySensorDeviceClass) -> None:
         super().__init__()
-        self.device = sensor
-        self.device_class = device_class
+        self._device_class = device_class
 
+        self.device = sensor
         self.device.start_updater()
         self.device.set_update_callback(self.async_schedule_update_ha_state)
 
@@ -49,7 +48,7 @@ class SmartrentBinarySensor(BinarySensorEntity):
 
     @property
     def device_class(self):
-        return self.device_class
+        return self._device_class
 
     @property
     def is_on(self) -> Union[bool, None]:
