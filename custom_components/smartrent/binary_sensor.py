@@ -1,8 +1,12 @@
 """Platform for binary sensor integration."""
+
 import logging
 from typing import Union
 
-from homeassistant.components.binary_sensor import BinarySensorEntity, BinarySensorDeviceClass
+from homeassistant.components.binary_sensor import (
+    BinarySensorEntity,
+    BinarySensorDeviceClass,
+)
 from homeassistant.helpers.device_registry import DeviceEntryType
 from smartrent import Sensor
 from smartrent.api import API
@@ -17,10 +21,14 @@ async def async_setup_entry(hass, entry, async_add_entities):
     client: API = hass.data["smartrent"][entry.entry_id]
 
     for leak_sensor in client.get_leak_sensors():
-        async_add_entities([SmartrentBinarySensor(leak_sensor, BinarySensorDeviceClass.MOISTURE)])
+        async_add_entities(
+            [SmartrentBinarySensor(leak_sensor, BinarySensorDeviceClass.MOISTURE)]
+        )
 
     for motion_sensor in client.get_motion_sensors():
-        async_add_entities([SmartrentBinarySensor(motion_sensor, BinarySensorDeviceClass.MOTION)])
+        async_add_entities(
+            [SmartrentBinarySensor(motion_sensor, BinarySensorDeviceClass.MOTION)]
+        )
 
 
 class SmartrentBinarySensor(BinarySensorEntity):
