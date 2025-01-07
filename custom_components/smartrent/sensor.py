@@ -1,4 +1,5 @@
 """Platform for sensor integration."""
+
 from typing import Optional, Union
 
 from homeassistant.components.sensor import SensorEntity, SensorStateClass
@@ -42,6 +43,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
 
     for motion_sensor in client.get_motion_sensors():
         async_add_entities([SmartrentSensor(motion_sensor, "battery_level", "battery")])
+
 
 class SmartrentSensor(SensorEntity):
     def __init__(
