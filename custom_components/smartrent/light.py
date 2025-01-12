@@ -45,7 +45,7 @@ class SmartrentLight(LightEntity):
     @property
     def unique_id(self):
         """Return a unique ID."""
-        return self.device._device_id
+        return str(self.device._device_id)
 
     @property
     def name(self):
