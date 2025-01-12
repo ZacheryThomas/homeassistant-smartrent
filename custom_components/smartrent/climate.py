@@ -1,11 +1,13 @@
 """Platform for climate integration."""
 import logging
+from typing import Optional
 
 from homeassistant.components.climate import ClimateEntity
 from homeassistant.components.climate.const import (
     FAN_AUTO,
     FAN_ON,
     ClimateEntityFeature,
+    HVACAction,
     HVACMode,
 )
 from homeassistant.const import ATTR_TEMPERATURE, UnitOfTemperature
@@ -16,13 +18,23 @@ from .const import CONFIGURATION_URL, DOMAIN, PROPER_NAME
 
 _LOGGER = logging.getLogger(__name__)
 
-HA_MODE_TO_SMART_RENT = {
+HA_HVAC_MODE_TO_SMARTRENT = {
     HVACMode.COOL: "cool",
     HVACMode.HEAT: "heat",
     HVACMode.OFF: "off",
     HVACMode.HEAT_COOL: "auto",
 }
-SMARTRENT_MODE_TO_HA = {value: key for key, value in HA_MODE_TO_SMART_RENT.items()}
+SMARTRENT_HVAC_MODE_TO_HA = {
+    value: key for key, value in HA_HVAC_MODE_TO_SMARTRENT.items()
+}
+HA_HVAC_ACTION_TO_SMARTRENT = {
+    HVACAction.COOLING: "cooling",
+    HVACAction.HEATING: "heating",
+    HVACAction.OFF: "off",
+}
+SMARTRENT_HVAC_ACTION_TO_HA = {
+    value: key for key, value in HA_HVAC_ACTION_TO_SMARTRENT.items()
+}
 
 HA_FAN_TO_SMART_RENT = {FAN_ON: "on", FAN_AUTO: "auto"}
 SMARTRENT_FAN_TO_HA = {value: key for key, value in HA_FAN_TO_SMART_RENT.items()}
@@ -135,7 +147,7 @@ class SmartrentThermostat(ClimateEntity):
         """Return current operation ie. heat, cool, idle."""
         smartrent_hvac_mode = self.device.get_mode()
 
-        return SMARTRENT_MODE_TO_HA.get(smartrent_hvac_mode, None)
+        return SMARTRENT_HVAC_MODE_TO_HA.get(smartrent_hvac_mode, None)
 
     @property
     def hvac_modes(self):
@@ -144,9 +156,14 @@ class SmartrentThermostat(ClimateEntity):
 
     async def async_set_hvac_mode(self, hvac_mode):
         """Set new target operation mode."""
-        smartrent_hvac_mode = HA_MODE_TO_SMART_RENT.get(hvac_mode)
+        smartrent_hvac_mode = HA_HVAC_MODE_TO_SMARTRENT.get(hvac_mode)
 
         await self.device.async_set_mode(smartrent_hvac_mode)
+
+    @property
+    def hvac_action(self) -> Optional[HVACAction]:
+        """Return the current running hvac operation ie. cooling, heating, off"""
+        return SMARTRENT_HVAC_ACTION_TO_HA.get(self.device.get_operating_state())
 
     async def async_set_temperature(self, **kwargs):
         temperature = kwargs.get(ATTR_TEMPERATURE)
