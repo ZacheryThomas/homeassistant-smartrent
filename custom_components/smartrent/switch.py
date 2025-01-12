@@ -35,7 +35,7 @@ class SmartrentBinarySwitch(SwitchEntity):
 
     @property
     def unique_id(self):
-        return str(self.device._device_id)
+        return self.device._device_id
 
     @property
     def name(self):
