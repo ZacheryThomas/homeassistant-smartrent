@@ -6,6 +6,8 @@
 [![Code style: black][black-shield]](https://github.com/psf/black)
 [![Downloads][downloads-shield]][releases]
 
+> [!WARNING]
+> I moved out of my apartment and don't have a way to access SmartRent anymore. I will add bug fix PRs as ppl contribute them
 
 This is a basic Homeassistant component to support SmartRent Locks, Thermostats, Leak Sensors, Motion Sensors, and Light Switches. This component uses the `smartrent-py` library that can be found [here](https://github.com/ZacheryThomas/smartrent-py)!
 
