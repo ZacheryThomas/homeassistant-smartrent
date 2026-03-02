@@ -4,7 +4,7 @@ from typing import Any, Optional, Set
 
 from homeassistant.components.light import (
     ATTR_BRIGHTNESS,
-    COLOR_MODE_BRIGHTNESS,
+    ColorMode,
     LightEntity,
 )
 from homeassistant.helpers.device_registry import DeviceEntryType
@@ -56,13 +56,13 @@ class SmartrentLight(LightEntity):
     def supported_color_modes(self) -> Optional[Set[str]]:
         """Return list of available color modes."""
         modes: Set[str] = set()
-        modes.add(COLOR_MODE_BRIGHTNESS)
+        modes.add(ColorMode.BRIGHTNESS)
         return modes
 
     @property
     def color_mode(self) -> str:
         """Return the active color mode."""
-        return COLOR_MODE_BRIGHTNESS
+        return ColorMode.BRIGHTNESS
 
     @property
     def is_on(self) -> bool:
