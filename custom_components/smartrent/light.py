@@ -2,11 +2,7 @@
 import logging
 from typing import Any
 
-from homeassistant.components.light import (
-    ATTR_BRIGHTNESS,
-    ColorMode,
-    LightEntity,
-)
+from homeassistant.components.light import ATTR_BRIGHTNESS, ColorMode, LightEntity
 from homeassistant.helpers.device_registry import DeviceEntryType
 from smartrent import MultilevelSwitch
 
