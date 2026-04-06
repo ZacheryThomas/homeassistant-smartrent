@@ -53,12 +53,12 @@ You should be able to now load the integration. This can be done by going to `Co
 
 You should be able to search for SmartRent and then enter your email and password in the popup.
 
-[license-shield]: https://img.shields.io/github/license/zacherythomas/homeassistant-smartrent.svg?style=for-the-badge
+[license-shield]: https://img.shields.io/github/license/abipalli/homeassistant-smartrent.svg?style=for-the-badge
 [hacs-shield]: https://img.shields.io/badge/HACS-Default-orange.svg?style=for-the-badge
 [black-shield]: https://img.shields.io/badge/code%20style-black-000000.svg?style=for-the-badge
 
-[releases-shield]: https://img.shields.io/github/release/zacherythomas/homeassistant-smartrent.svg?style=for-the-badge
-[releases]: https://github.com/zacherythomas/homeassistant-smartrent/releases
-[commits-shield]: https://img.shields.io/github/commit-activity/y/zacherythomas/homeassistant-smartrent.svg?style=for-the-badge
-[commits]: https://github.com/zacherythomas/homeassistant-smartrent/commits/master
-[downloads-shield]: https://img.shields.io/github/downloads/zacherythomas/homeassistant-smartrent/total?color=green&style=for-the-badge
+[releases-shield]: https://img.shields.io/github/release/abipalli/homeassistant-smartrent.svg?style=for-the-badge
+[releases]: https://github.com/abipalli/homeassistant-smartrent/releases
+[commits-shield]: https://img.shields.io/github/commit-activity/y/abipalli/homeassistant-smartrent.svg?style=for-the-badge
+[commits]: https://github.com/abipalli/homeassistant-smartrent/commits/main
+[downloads-shield]: https://img.shields.io/github/downloads/abipalli/homeassistant-smartrent/total?color=green&style=for-the-badge
