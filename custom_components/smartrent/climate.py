@@ -65,9 +65,11 @@ class SmartrentThermostat(ClimateEntity):
         return False
 
     @property
-    def unique_id(self):
+    def unique_id(self) -> str:
         """Return a unique ID."""
-        return self.device._device_id
+        # str(): Home Assistant rejects non-string unique IDs. Existing entries are
+        # rewritten by the migration in __init__.py, so this stays stable.
+        return str(self.device._device_id)
 
     @property
     def name(self):

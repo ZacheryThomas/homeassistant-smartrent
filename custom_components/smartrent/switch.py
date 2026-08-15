@@ -34,8 +34,10 @@ class SmartrentBinarySwitch(SwitchEntity):
         return False
 
     @property
-    def unique_id(self):
-        return self.device._device_id
+    def unique_id(self) -> str:
+        # str(): Home Assistant rejects non-string unique IDs. Existing entries are
+        # rewritten by the migration in __init__.py, so this stays stable.
+        return str(self.device._device_id)
 
     @property
     def name(self):

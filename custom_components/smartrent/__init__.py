@@ -9,8 +9,9 @@ import logging
 
 from aiohttp.client_exceptions import ClientConnectorError
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.core import HomeAssistant
+from homeassistant.core import HomeAssistant, callback
 from homeassistant.exceptions import ConfigEntryAuthFailed, ConfigEntryNotReady
+from homeassistant.helpers import entity_registry as er
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from smartrent import async_login
 from smartrent.api import API
@@ -28,11 +29,38 @@ from .const import (
 _LOGGER: logging.Logger = logging.getLogger(__package__)
 
 
+@callback
+def _migrate_unique_id(entry: er.RegistryEntry):
+    """Rewrite a single integer unique ID as its string equivalent."""
+    if isinstance(entry.unique_id, str):
+        return None
+
+    return {"new_unique_id": str(entry.unique_id)}
+
+
+async def _async_migrate_unique_ids(hass: HomeAssistant, entry: ConfigEntry) -> None:
+    """Convert integer unique IDs written by earlier versions into strings.
+
+    climate, light, lock, switch and binary_sensor used to return the SmartRent
+    device id as a plain int. Home Assistant logs an error for every one of them
+    ("has a non string unique_id") and intends to reject them outright.
+
+    Rewriting has to happen before the platforms are set up. Without it the
+    now-stringified unique IDs would not match the integers already in the
+    registry, so every affected entity would be registered anew as
+    `lock.front_door_lock_2` while the original stayed behind as an unavailable
+    orphan -- silently breaking existing automations, dashboards and history.
+    """
+    await er.async_migrate_entries(hass, entry.entry_id, _migrate_unique_id)
+
+
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     """Set up this integration using UI."""
     if hass.data.get(DOMAIN) is None:
         hass.data.setdefault(DOMAIN, {})
         _LOGGER.info(STARTUP_MESSAGE)
+
+    await _async_migrate_unique_ids(hass, entry)
 
     username = entry.data.get(CONF_USERNAME)
     password = entry.data.get(CONF_PASSWORD)
