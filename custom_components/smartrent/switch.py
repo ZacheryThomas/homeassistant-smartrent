@@ -3,11 +3,10 @@ import logging
 from typing import Any, Union
 
 from homeassistant.components.switch import SwitchEntity
-from homeassistant.helpers.device_registry import DeviceEntryType
 from smartrent import BinarySwitch
 from smartrent.api import API
 
-from .const import CONFIGURATION_URL, PROPER_NAME
+from .const import CONFIGURATION_URL, DOMAIN, PROPER_NAME
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -35,7 +34,7 @@ class SmartrentBinarySwitch(SwitchEntity):
 
     @property
     def unique_id(self):
-        return self.device._device_id
+        return str(self.device._device_id)
 
     @property
     def name(self):
@@ -55,10 +54,9 @@ class SmartrentBinarySwitch(SwitchEntity):
     @property
     def device_info(self):
         return dict(
-            identifiers={("id", self.device._device_id)},
+            identifiers={(DOMAIN, str(self.device._device_id))},
             name=str(self.name),
             manufacturer=PROPER_NAME,
             model=str(self.device.__class__.__name__),
-            entry_type=DeviceEntryType.SERVICE,
             configuration_url=CONFIGURATION_URL,
         )

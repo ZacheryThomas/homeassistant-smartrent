@@ -1,0 +1,135 @@
+get_guest_codes:
+  target:
+    entity:
+      domain: lock
+      integration: smartrent
+
+create_guest_code:
+  target:
+    entity:
+      domain: lock
+      integration: smartrent
+  fields:
+    activation_type:
+      required: true
+      selector:
+        select:
+          options:
+            - permanent
+            - temporary
+            - recurring
+          translation_key: guest_activation_type
+    first_name:
+      required: true
+      selector:
+        text:
+    last_name:
+      required: true
+      selector:
+        text:
+    phone:
+      selector:
+        text:
+          type: tel
+    email:
+      selector:
+        text:
+          type: email
+    start_at:
+      selector:
+        datetime:
+    end_at:
+      selector:
+        datetime:
+    recurring_start_time:
+      selector:
+        time:
+    recurring_end_time:
+      selector:
+        time:
+    recurring_days:
+      selector:
+        select:
+          multiple: true
+          options:
+            - Sunday
+            - Monday
+            - Tuesday
+            - Wednesday
+            - Thursday
+            - Friday
+            - Saturday
+          translation_key: weekday
+
+update_guest_code:
+  target:
+    entity:
+      domain: lock
+      integration: smartrent
+  fields:
+    code_id:
+      required: true
+      selector:
+        number:
+          min: 1
+          mode: box
+    activation_type:
+      selector:
+        select:
+          options:
+            - permanent
+            - temporary
+            - recurring
+          translation_key: guest_activation_type
+    first_name:
+      selector:
+        text:
+    last_name:
+      selector:
+        text:
+    phone:
+      selector:
+        text:
+          type: tel
+    email:
+      selector:
+        text:
+          type: email
+    start_at:
+      selector:
+        datetime:
+    end_at:
+      selector:
+        datetime:
+    recurring_start_time:
+      selector:
+        time:
+    recurring_end_time:
+      selector:
+        time:
+    recurring_days:
+      selector:
+        select:
+          multiple: true
+          options:
+            - Sunday
+            - Monday
+            - Tuesday
+            - Wednesday
+            - Thursday
+            - Friday
+            - Saturday
+          translation_key: weekday
+
+delete_guest_code:
+  target:
+    entity:
+      domain: lock
+      integration: smartrent
+  fields:
+    code_id:
+      required: true
+      selector:
+        number:
+          min: 1
+          mode: box

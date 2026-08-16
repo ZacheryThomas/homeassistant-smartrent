@@ -28,5 +28,137 @@
       "already_configured": "Already Configured Account",
       "reauth_successful": "Reauth worked!"
     }
+  },
+  "selector": {
+    "guest_activation_type": {
+      "options": {
+        "permanent": "Permanent",
+        "temporary": "Temporary",
+        "recurring": "Recurring"
+      }
+    },
+    "weekday": {
+      "options": {
+        "Sunday": "Sunday",
+        "Monday": "Monday",
+        "Tuesday": "Tuesday",
+        "Wednesday": "Wednesday",
+        "Thursday": "Thursday",
+        "Friday": "Friday",
+        "Saturday": "Saturday"
+      }
+    }
+  },
+  "services": {
+    "get_guest_codes": {
+      "name": "Get guest codes",
+      "description": "Gets guest PIN codes and live access policy for a SmartRent lock. The response contains sensitive PINs."
+    },
+    "create_guest_code": {
+      "name": "Create guest code",
+      "description": "Creates a SmartRent-generated guest PIN and returns it only after verified read-back. The response contains a sensitive PIN.",
+      "fields": {
+        "activation_type": {
+          "name": "Activation type",
+          "description": "Whether access is permanent, temporary, or recurring."
+        },
+        "first_name": {
+          "name": "First name",
+          "description": "Guest first name."
+        },
+        "last_name": {
+          "name": "Last name",
+          "description": "Guest last name."
+        },
+        "phone": {
+          "name": "Phone",
+          "description": "Guest phone number. Phone or email is required."
+        },
+        "email": {
+          "name": "Email",
+          "description": "Guest email address. Phone or email is required."
+        },
+        "start_at": {
+          "name": "Starts at",
+          "description": "Timezone-aware start timestamp for temporary access."
+        },
+        "end_at": {
+          "name": "Ends at",
+          "description": "Timezone-aware end timestamp for temporary access."
+        },
+        "recurring_start_time": {
+          "name": "Daily start time",
+          "description": "Start time for each recurring access window."
+        },
+        "recurring_end_time": {
+          "name": "Daily end time",
+          "description": "End time for each recurring access window."
+        },
+        "recurring_days": {
+          "name": "Weekdays",
+          "description": "Weekdays on which recurring access is active."
+        }
+      }
+    },
+    "update_guest_code": {
+      "name": "Update guest code",
+      "description": "Updates guest metadata or schedule and returns a PIN-free result only after verified read-back.",
+      "fields": {
+        "code_id": {
+          "name": "Guest code ID",
+          "description": "ID returned by Get guest codes or Create guest code."
+        },
+        "activation_type": {
+          "name": "Activation type",
+          "description": "New access type. Omit to preserve the current type."
+        },
+        "first_name": {
+          "name": "First name",
+          "description": "New guest first name. Omit to preserve it."
+        },
+        "last_name": {
+          "name": "Last name",
+          "description": "New guest last name. Omit to preserve it."
+        },
+        "phone": {
+          "name": "Phone",
+          "description": "New phone number. Omit to preserve it."
+        },
+        "email": {
+          "name": "Email",
+          "description": "New email address. Omit to preserve it."
+        },
+        "start_at": {
+          "name": "Starts at",
+          "description": "New timezone-aware temporary start timestamp."
+        },
+        "end_at": {
+          "name": "Ends at",
+          "description": "New timezone-aware temporary end timestamp."
+        },
+        "recurring_start_time": {
+          "name": "Daily start time",
+          "description": "New recurring access start time."
+        },
+        "recurring_end_time": {
+          "name": "Daily end time",
+          "description": "New recurring access end time."
+        },
+        "recurring_days": {
+          "name": "Weekdays",
+          "description": "New recurring access weekdays."
+        }
+      }
+    },
+    "delete_guest_code": {
+      "name": "Delete guest code",
+      "description": "Deletes a guest code and returns a PIN-free result only after verified read-back.",
+      "fields": {
+        "code_id": {
+          "name": "Guest code ID",
+          "description": "ID returned by Get guest codes or Create guest code."
+        }
+      }
+    }
   }
 }

@@ -53,6 +53,66 @@ You should be able to now load the integration. This can be done by going to `Co
 
 You should be able to search for SmartRent and then enter your email and password in the popup.
 
+## Guest access codes
+
+SmartRent lock entities provide four response-only actions:
+
+- `smartrent.get_guest_codes` returns guest PIN codes and the unit's live access
+  policy limits.
+- `smartrent.create_guest_code` asks SmartRent to generate a permanent,
+  temporary, or recurring guest PIN.
+- `smartrent.update_guest_code` updates guest metadata or a schedule by the
+  `code_id` returned by the get/create actions.
+- `smartrent.delete_guest_code` deletes a guest code by `code_id`.
+
+All actions must target a SmartRent `lock` entity. Unit, hub, and device IDs are
+resolved automatically. Accounts with multiple units fail safely if the target
+lock cannot be matched unambiguously. Update and delete operate only on fresh
+`guests[].pin_codes` data; they cannot mutate resident, mobile, or fob
+credentials. These actions manage credentials only and never unlock or actuate
+the lock.
+
+Create does not accept a custom PIN: SmartRent generates it. Every mutation is
+checked with a fresh read-back before the action reports success. An accepted
+mutation that cannot be verified before the bounded timeout raises an error
+instead of reporting success. Omitted update fields preserve their current
+values.
+
+> [!CAUTION]
+> Guest PINs are secrets. They are never added to entity state or attributes
+> and update/delete responses do not include them. However,
+> `get_guest_codes` and `create_guest_code` intentionally return PINs in their
+> explicit action responses. Home Assistant automation traces, action-response
+> variables, debug tooling, and notifications/templates that consume those
+> responses can therefore retain or expose sensitive PINs. Restrict trace and
+> log access, avoid logging the response, and do not persist it longer than
+> necessary.
+
+### Guest PIN dashboard card
+
+`www/smartrent-guest-pins-card.js` provides the
+`custom:smartrent-guest-pins-card` Lovelace card. It lists verified guest PINs
+and can create temporary or recurring
+codes, copy a generated PIN, and delete a code. The card calls the
+response-enabled SmartRent actions directly; it does not put PINs into entity
+state or dashboard configuration.
+
+Install the module under `/config/www/`, register it as a Lovelace module
+resource, and add it to a dashboard with the SmartRent lock entity to manage:
+
+```yaml
+type: custom:smartrent-guest-pins-card
+entity: lock.front_door
+title: Guest PINs
+```
+
+Restrict the card's view to trusted Home Assistant users because viewing the
+card reveals active guest PINs in that browser session.
+
+Until the related `smartrent-py` changes are released, the integration manifest
+points to the exact tested client commit. Replace that temporary Git dependency
+with the corresponding published release before releasing this integration.
+
 [license-shield]: https://img.shields.io/github/license/zacherythomas/homeassistant-smartrent.svg?style=for-the-badge
 [hacs-shield]: https://img.shields.io/badge/HACS-Default-orange.svg?style=for-the-badge
 [black-shield]: https://img.shields.io/badge/code%20style-black-000000.svg?style=for-the-badge
